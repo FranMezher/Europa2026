@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Europa 2026 — Nuestro viaje</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --surface2: #1e1e1e;
+  --surface3: #252525;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.14);
+  --text: #f0ede8;
+  --text2: #9e9b94;
+  --text3: #5e5c57;
+  --accent: #e8d5a3;
+  --accent2: rgba(232,213,163,0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-min-height: 100svh; min-height: -webkit-fill-available; overflow-x: hidden; }
+
+/* HERO */
+.hero { position: relative; min-height: 100svh; min-height: -webkit-fill-available; min-height: 560px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1555992336-03a23c7b20ee?w=1600&q=80') center/cover no-repeat; filter: brightness(0.3); }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, var(--bg) 100%); }
+.hero-content { position: relative; z-index: 2; padding: 2rem; }
+.hero-eyebrow { font-size: 11px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 1rem; }
+.hero-title { font-size: clamp(48px, 10vw, 96px); font-weight: 300; line-height: 1; letter-spacing: -0.03em; color: var(--text); margin-bottom: 1rem; }
+.hero-title em { font-style: italic; color: var(--accent); }
+.hero-sub { font-size: 16px; color: var(--text2); margin-bottom: 2.5rem; font-weight: 300; }
+.hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+.hstat { text-align: center; }
+.hstat-n { font-size: 32px; font-weight: 300; color: var(--text); }
+.hstat-l { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 2px; }
+.scroll-hint { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); font-size: 11px; color: var(--text3); letter-spacing: 0.15em; text-transform: uppercase; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--text3), transparent); animation: scrollAnim 1.8s ease-in-out infinite; }
+@keyframes scrollAnim { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+/* ROUTE BAR */
+.route-section { padding: 2rem 1rem 1.5rem; max-width: 960px; margin: 0 auto; }
+.route-label { font-size: 10px; letter-spacing: 0.2em; color: var(--text3); text-transform: uppercase; text-align: center; margin-bottom: 1.5rem; }
+.route-scroll { overflow-x: auto; scrollbar-width: none; }
+.route-scroll::-webkit-scrollbar { display: none; }
+.route-track { display: flex; align-items: center; min-width: max-content; padding: 0 1rem; margin: 0 auto; }
+.route-stop { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; padding: 8px 10px; border-radius: 10px; transition: background 0.15s; }
+.route-stop:hover { background: var(--surface2); }
+.stop-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--text3); transition: all 0.2s; }
+.route-stop.active .stop-dot { border-color: var(--accent); background: var(--accent); transform: scale(1.35); }
+.stop-name { font-size: 10px; color: var(--text3); white-space: nowrap; transition: color 0.2s; }
+.route-stop.active .stop-name { color: var(--accent); font-weight: 500; }
+.route-conn { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-bottom: 18px; padding: 0 2px; }
+.conn-icon { font-size: 10px; color: var(--text3); }
+.conn-dash { width: 22px; height: 1px; background: repeating-linear-gradient(to right, var(--text3) 0, var(--text3) 3px, transparent 3px, transparent 6px); }
+
+/* DESTINATION CARD */
+.dest-section { max-width: 960px; margin: 0 auto; padding: 0 1rem 1rem; }
+.dest-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: none; }
+.dest-card.active { display: block; }
+.dest-image-wrap { position: relative; height: 320px; overflow: hidden; }
+.dest-image-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 6s ease; }
+.dest-card:hover .dest-image-wrap img { transform: scale(1.04); }
+.dest-image-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 25%, rgba(10,10,10,0.95) 100%); }
+.dest-image-text { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.75rem 2rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; }
+.dest-country-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
+.dest-name { font-size: clamp(28px, 5vw, 44px); font-weight: 300; line-height: 1; letter-spacing: -0.02em; }
+.dest-dates { font-size: 13px; color: var(--text2); margin-top: 4px; }
+.dest-days-badge { background: rgba(232,213,163,0.15); border: 1px solid rgba(232,213,163,0.28); color: var(--accent); font-size: 11px; padding: 5px 13px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+
+/* DAY TABS */
+.dest-body { padding: 1.5rem 2rem 2rem; }
+.days-tabs { display: flex; gap: 6px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.day-tab { background: transparent; border: 1px solid var(--border2); color: var(--text2); font-size: 12px; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
+.day-tab:hover { background: var(--surface2); color: var(--text); }
+.day-tab.active { background: var(--accent2); border-color: rgba(232,213,163,0.4); color: var(--accent); }
+
+/* SCHEDULE */
+.schedule { display: none; }
+.schedule.active { display: block; }
+.schedule-header { margin-bottom: 1.25rem; }
+.schedule-date { font-size: 18px; font-weight: 300; color: var(--text); margin-bottom: 2px; }
+.schedule-summary { font-size: 13px; color: var(--text2); }
+
+.timeline-item { display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); position: relative; cursor: pointer; }
+.timeline-item:last-child { border-bottom: none; }
+.timeline-item:hover { background: rgba(255,255,255,0.02); margin: 0 -8px; padding-left: 8px; padding-right: 8px; border-radius: 6px; }
+.tl-time { min-width: 88px; font-size: 12px; color: var(--accent); font-variant-numeric: tabular-nums; padding-top: 2px; flex-shrink: 0; }
+.tl-dot-col { display: flex; flex-direction: column; align-items: center; padding-top: 4px; flex-shrink: 0; }
+.tl-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text3); border: 1px solid var(--border2); flex-shrink: 0; }
+.tl-line { width: 1px; flex: 1; background: var(--border); margin-top: 4px; min-height: 20px; }
+.tl-content { flex: 1; }
+.tl-activity { font-size: 14px; color: var(--text); line-height: 1.45; margin-bottom: 3px; }
+.tl-detail { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.tl-cost { display: inline-flex; align-items: center; gap: 4px; margin-top: 5px; font-size: 11px; color: var(--text3); background: var(--surface2); padding: 2px 8px; border-radius: 8px; }
+.tl-cost.free { color: #4a9; }
+.tl-duration { font-size: 11px; color: var(--text3); margin-top: 3px; }
+
+/* TRANSFER ROW */
+.transfer-row { display: flex; gap: 16px; padding: 8px 0; align-items: center; opacity: 0.55; }
+.transfer-row .tl-time { color: var(--text3); font-size: 11px; }
+.transfer-row .tl-activity { font-size: 12px; color: var(--text3); font-style: italic; }
+
+/* NAV */
+.dest-nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem 1.5rem; border-top: 1px solid var(--border); }
+.nav-btn { display: flex; align-items: center; gap: 6px; background: transparent; border: 1px solid var(--border2); color: var(--text2); font-size: 13px; padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+.nav-btn:hover:not(:disabled) { background: var(--surface2); color: var(--text); }
+.nav-btn:disabled { opacity: 0.22; cursor: default; }
+.nav-counter { font-size: 12px; color: var(--text3); }
+
+/* SHARE */
+.share-section { max-width: 960px; margin: 2rem auto 0; padding: 1.5rem 1rem 3rem; text-align: center; }
+.share-title { font-size: 13px; color: var(--text3); margin-bottom: 1rem; }
+.share-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.share-btn { background: transparent; border: 1px solid var(--border2); color: var(--text2); font-size: 13px; padding: 10px 22px; border-radius: 20px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+.share-btn:hover { background: var(--surface2); color: var(--text); }
+.share-btn.primary { background: var(--accent); border-color: var(--accent); color: #1a1500; font-weight: 500; }
+.share-btn.primary:hover { opacity: 0.88; }
+
+footer { text-align: center; padding: 2rem; font-size: 11px; color: var(--text3); border-top: 1px solid var(--border); margin-top: 2rem; }
+
+@media (max-width: 640px) {
+  .dest-image-wrap { height: 240px; }
+  .dest-body { padding: 1.25rem; }
+  .dest-image-text { padding: 1.25rem; flex-direction: column; align-items: flex-start; }
+  .dest-nav { padding: 1rem 1.25rem; }
+  .tl-time { min-width: 72px; }
+}
+</style>
+</head>
+<body>
+
+<!-- iOS/Android open-in-browser splash -->
+<div id="openBrowserOverlay" style="display:none;position:fixed;inset:0;z-index:9999;background:#0a0a0a;color:#f0ede8;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <div style="max-width:420px;margin:0 auto;padding:48px 28px 48px;">
+    <!-- Logo / emoji -->
+    <div style="font-size:48px;text-align:center;margin-bottom:20px;">✈️</div>
+    <h1 style="font-size:26px;font-weight:300;text-align:center;letter-spacing:-0.02em;margin-bottom:8px;">Europa 2026</h1>
+    <p style="font-size:14px;color:#9e9b94;text-align:center;margin-bottom:36px;">Para ver el itinerario completo,<br>abrí este archivo en un navegador.</p>
+
+    <!-- iPhone instructions -->
+    <div id="iosInstructions" style="display:none;">
+      <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;margin-bottom:16px;">
+        <p style="font-size:12px;color:#e8d5a3;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:14px;">iPhone / iPad</p>
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:#e8d5a3;color:#1a1500;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+          <p style="font-size:14px;color:#f0ede8;line-height:1.5;">Tocá el ícono de compartir <span style="font-size:16px;">⬆</span> (abajo o arriba de la pantalla)</p>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:#e8d5a3;color:#1a1500;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+          <p style="font-size:14px;color:#f0ede8;line-height:1.5;">Elegí <strong style="color:#e8d5a3;">"Abrir con Safari"</strong> o <strong style="color:#e8d5a3;">"Abrir en Chrome"</strong></p>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:#e8d5a3;color:#1a1500;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+          <p style="font-size:14px;color:#f0ede8;line-height:1.5;">¡Listo! El itinerario se abre completo con imágenes y horarios.</p>
+        </div>
+      </div>
+      <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px;margin-bottom:16px;">
+        <p style="font-size:12px;color:#9e9b94;line-height:1.6;">💡 <strong style="color:#e8d5a3;">Tip:</strong> Si te llegó por WhatsApp, tocá los tres puntitos <strong style="color:#e8d5a3;">⋯</strong> y elegí <strong style="color:#e8d5a3;">"Abrir en navegador"</strong>.</p>
+      </div>
+    </div>
+
+    <!-- Android instructions -->
+    <div id="androidInstructions" style="display:none;">
+      <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;margin-bottom:16px;">
+        <p style="font-size:12px;color:#e8d5a3;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:14px;">Android</p>
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:#e8d5a3;color:#1a1500;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+          <p style="font-size:14px;color:#f0ede8;line-height:1.5;">Tocá el botón de compartir o los tres puntitos <strong style="color:#e8d5a3;">⋮</strong></p>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:#e8d5a3;color:#1a1500;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+          <p style="font-size:14px;color:#f0ede8;line-height:1.5;">Elegí <strong style="color:#e8d5a3;">"Abrir con Chrome"</strong> o cualquier navegador</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop instructions -->
+    <div id="desktopInstructions" style="display:none;">
+      <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;margin-bottom:16px;">
+        <p style="font-size:14px;color:#f0ede8;line-height:1.6;">Hacé doble clic en el archivo <strong style="color:#e8d5a3;">europa2026.html</strong> para abrirlo en tu navegador, o arrastralo a la ventana del navegador.</p>
+      </div>
+    </div>
+
+    <button onclick="closeOverlay()" style="-webkit-appearance:none;appearance:none;display:block;width:100%;margin-top:8px;padding:14px;background:#e8d5a3;border:none;border-radius:12px;font-size:15px;font-weight:600;color:#1a1500;cursor:pointer;font-family:inherit;">Ya lo abrí en el navegador →</button>
+    <p style="font-size:11px;color:#5e5c57;text-align:center;margin-top:12px;">También podés tocar el botón de arriba para ver el itinerario de todas formas.</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  var ua = navigator.userAgent || '';
+  var isWebView = false;
+  // Instagram, WhatsApp, Facebook, Messenger, TikTok, Snapchat webviews
+  if (/FBAN|FBAV|Instagram|WhatsApp|Snapchat|TikTok|Line\/|MicroMessenger|GSA\//.test(ua)) isWebView = true;
+  // iOS WebView (no Safari in UA but has AppleWebKit)
+  if (/iP(hone|od|ad)/.test(ua) && !/Safari\//.test(ua) && /AppleWebKit/.test(ua)) isWebView = true;
+  // iOS file:// protocol
+  if (window.location.protocol === 'file:' && /iP(hone|od|ad)/.test(ua)) isWebView = true;
+
+  if (isWebView) {
+    document.getElementById('openBrowserOverlay').style.display = 'block';
+    if (/iP(hone|od|ad)/.test(ua)) {
+      document.getElementById('iosInstructions').style.display = 'block';
+    } else if (/Android/.test(ua)) {
+      document.getElementById('androidInstructions').style.display = 'block';
+    } else {
+      document.getElementById('desktopInstructions').style.display = 'block';
+    }
+  }
+
+  window.closeOverlay = function() {
+    document.getElementById('openBrowserOverlay').style.display = 'none';
+  };
+})();
+</script>
+
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Verano 2026</div>
+    <div class="hero-title">Europa <em>&</em><br>nosotras</div>
+    <div class="hero-sub">19 junio — 13 julio · Italia · Croacia · Grecia · España</div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-n">25</div><div class="hstat-l">días</div></div>
+      <div class="hstat"><div class="hstat-n">9</div><div class="hstat-l">destinos</div></div>
+      <div class="hstat"><div class="hstat-n">4</div><div class="hstat-l">países</div></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Ver itinerario</span><div class="scroll-line"></div></div>
+</section>
+
+<section class="route-section">
+  <div class="route-label">Ruta del viaje</div>
+  <div class="route-scroll"><div class="route-track" id="routeTrack"></div></div>
+</section>
+
+<section class="dest-section" id="destSection"></section>
+
+<section class="share-section">
+  <div class="share-title">Compartir este itinerario</div>
+  <div class="share-actions">
+    <button class="share-btn primary" onclick="copyText(this)">Copiar itinerario</button>
+    <button class="share-btn" onclick="window.print()">Guardar como PDF</button>
+  </div>
+</section>
+
+<footer>Europa 2026 · Hecho con amor ✈</footer>
+
+<script>
+const stops = [
+{
+  name:"Buenos Aires", country:"Argentina", flag:"🇦🇷", dates:"19 jun", daysLabel:"Día 0", transport:"✈",
+  image:"https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=1200&q=80",
+  days:[{
+    date:"19 jun", label:"Viaje de ida",
+    items:[
+      {type:"event", time:"22:00", activity:"Vuelo Buenos Aires → Roma (escala)", detail:"Salida nocturna. Llegada a Roma el día 20 a las 17:00 hs (GMT-3).", cost:"", duration:"~17h"},
+    ]
+  }]
+},
+{
+  name:"Roma", country:"Italia", flag:"🇮🇹", dates:"20 – 23 jun", daysLabel:"Días 1–4", transport:"✈",
+  image:"https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1200&q=80",
+  days:[
+    {
+      date:"20 jun", label:"Llegada a Roma",
+      items:[
+        {type:"event", time:"17:00", activity:"Llegada al aeropuerto", detail:"Check-in en el hotel. Instalarse y descansar.", cost:"Taxi ~40€ / Bus ~6€", duration:""},
+        {type:"event", time:"20:00", activity:"Primera cena en Roma", detail:"Explorar el barrio del hotel, cenar tranquilo.", cost:"", duration:""},
+      ]
+    },
+    {
+      date:"21 jun", label:"Norte de Roma",
+      items:[
+        {type:"transfer", time:"14:00 – 14:30", activity:"Traslado al centro", detail:"Ir caminando o en metro al centro histórico.", cost:"", duration:"30 min"},
+        {type:"event", time:"14:30 – 16:00", activity:"Castel Sant'Angelo", detail:"Entrada al castillo y recorrido completo por las salas y terrazas.", cost:"15 €", duration:"1h30"},
+        {type:"transfer", time:"16:00 – 16:20", activity:"Caminata", detail:"A pie hacia Piazza del Popolo.", cost:"", duration:"20 min"},
+        {type:"event", time:"16:20 – 17:00", activity:"Piazza del Popolo", detail:"Paseo por la plaza y mirador panorámico.", cost:"Gratis", duration:"40 min"},
+        {type:"transfer", time:"17:00 – 17:10", activity:"Caminata", detail:"Hacia Villa Borghese.", cost:"", duration:"10 min"},
+        {type:"event", time:"17:10 – 18:30", activity:"Villa Borghese", detail:"Parque amplio ideal para caminar, relajarse y disfrutar las vistas.", cost:"Gratis", duration:"1h20"},
+        {type:"transfer", time:"18:30 – 18:40", activity:"Caminata", detail:"Hacia Plaza de España.", cost:"", duration:"10 min"},
+        {type:"event", time:"18:40 – 19:20", activity:"Plaza de España (Scalinata)", detail:"Las famosas escalinatas de Trinità dei Monti. Muy fotogénico.", cost:"Gratis", duration:"40 min"},
+        {type:"event", time:"19:20 – 20:30", activity:"Via del Corso", detail:"Paseo por la calle comercial más famosa de Roma. Tiendas y ambiente.", cost:"Gratis", duration:"1h10"},
+        {type:"event", time:"21:00 – 21:30", activity:"Fontana di Trevi (visita nocturna)", detail:"Mucho más linda de noche y con menos gente. Tirar la moneda.", cost:"Gratis", duration:"30 min"},
+      ]
+    },
+    {
+      date:"22 jun", label:"Roma histórica",
+      items:[
+        {type:"event", time:"08:30 – 10:00", activity:"Coliseo", detail:"Entrada anticipada recomendada. Recorrido por el anfiteatro más icónico del mundo.", cost:"18 €", duration:"1h30"},
+        {type:"transfer", time:"10:00 – 10:05", activity:"Caminata al Foro", detail:"5 minutos a pie, bajando desde el Coliseo.", cost:"", duration:"5 min"},
+        {type:"event", time:"10:05 – 12:15", activity:"Foro Romano + Monte Palatino", detail:"Recorrido por las ruinas del corazón de la Roma antigua. Entrada incluida con el Coliseo.", cost:"Incluido", duration:"2h10"},
+        {type:"transfer", time:"12:15 – 12:25", activity:"Caminata", detail:"Hacia el Arco de Constantino.", cost:"", duration:"10 min"},
+        {type:"event", time:"12:25 – 12:40", activity:"Arco de Constantino", detail:"Fotos del arco triunfal junto al Coliseo. Imprescindible.", cost:"Gratis", duration:"15 min"},
+        {type:"transfer", time:"12:40 – 12:55", activity:"Caminata", detail:"Hacia el Vittoriano.", cost:"", duration:"15 min"},
+        {type:"event", time:"13:00 – 14:00", activity:"Monumento a Vittorio Emanuele II", detail:"Visita exterior y subida a la terraza para vista panorámica de Roma.", cost:"12 €", duration:"1h"},
+        {type:"transfer", time:"14:00 – 14:10", activity:"Caminata", detail:"Hacia el Panteón.", cost:"", duration:"10 min"},
+        {type:"event", time:"14:10 – 14:50", activity:"Panteón de Roma", detail:"Uno de los edificios más perfectamente conservados de la antigüedad. Cúpula increíble.", cost:"5 €", duration:"40 min"},
+        {type:"transfer", time:"14:50 – 15:00", activity:"Caminata", detail:"Hacia Fontana di Trevi (visita de día).", cost:"", duration:"10 min"},
+        {type:"event", time:"15:00 – 15:20", activity:"Fontana di Trevi (de día)", detail:"Segunda visita para ver la fuente con luz natural.", cost:"Gratis", duration:"20 min"},
+        {type:"transfer", time:"15:20 – 15:35", activity:"Caminata", detail:"Hacia Plaza Navona.", cost:"", duration:"15 min"},
+        {type:"event", time:"15:35 – 16:10", activity:"Plaza Navona", detail:"Una de las plazas más bellas de Roma. Fuente de los Cuatro Ríos de Bernini.", cost:"Gratis", duration:"35 min"},
+        {type:"transfer", time:"16:10 – 16:30", activity:"Caminata", detail:"Hacia Trastevere.", cost:"", duration:"20 min"},
+        {type:"event", time:"16:30 – 18:30", activity:"Trastevere", detail:"El barrio más bohemio de Roma. Calles adoquinadas, casas con hiedra y restaurantes con encanto.", cost:"Gratis", duration:"2h"},
+      ]
+    },
+    {
+      date:"23 jun", label:"Roma → Dubrovnik",
+      items:[
+        {type:"event", time:"Mañana", activity:"Tiempo libre en Roma", detail:"Últimas compras o café en el barrio. Preparar maletas.", cost:"", duration:""},
+        {type:"event", time:"Tarde", activity:"Vuelo Roma → Dubrovnik", detail:"Check-in en el aeropuerto con tiempo. Llegada a Dubrovnik por la tarde.", cost:"Vuelo", duration:"~2h"},
+      ]
+    }
+  ]
+},
+{
+  name:"Dubrovnik", country:"Croacia", flag:"🇭🇷", dates:"23 – 26 jun", daysLabel:"Días 4–7", transport:"⛴",
+  image:"https://images.unsplash.com/photo-1555990793-da11153b2473?w=1200&q=80",
+  days:[
+    {
+      date:"23 jun", label:"Llegada a Dubrovnik",
+      items:[
+        {type:"event", time:"14:00 – 15:30", activity:"Llegada y check-in", detail:"Traslado desde el aeropuerto (~25–35€ taxi / ~10€ bus). Instalarse en el alojamiento.", cost:"Taxi ~30€", duration:"1h30"},
+        {type:"transfer", time:"15:30 – 16:00", activity:"Ir a Old Town", detail:"Bus local o caminata según la distancia del alojamiento.", cost:"~2–3€", duration:"30 min"},
+        {type:"event", time:"16:00 – 18:30", activity:"Old Town Dubrovnik", detail:"Recorrido libre por el casco histórico amurallado. Calles de piedra, iglesias y vistas al mar.", cost:"Gratis", duration:"2h30"},
+        {type:"event", time:"18:30 – 19:00", activity:"Jesuit Stairs", detail:"Las famosas escalinatas barrocas, perfectas para fotos al atardecer.", cost:"Gratis", duration:"30 min"},
+        {type:"transfer", time:"19:00 – 19:20", activity:"Caminar al teleférico", detail:"Hacia la estación del teleférico de Mount Srđ.", cost:"", duration:"20 min"},
+        {type:"event", time:"19:30 – 21:00", activity:"Monte Srđ — teleférico + atardecer", detail:"Subida en teleférico directo (10 min). Vista aérea de Dubrovnik y el Adriático. Llevar abrigo arriba.", cost:"~27€", duration:"1h30"},
+        {type:"transfer", time:"21:00 – 21:20", activity:"Bajada y regreso", detail:"Teleférico de vuelta y caminata al alojamiento.", cost:"", duration:"20 min"},
+      ]
+    },
+    {
+      date:"24 jun", label:"Murallas y kayak",
+      items:[
+        {type:"transfer", time:"07:45 – 08:00", activity:"Ir a las murallas", detail:"Caminata mañanera, llegar temprano para evitar aglomeración y calor.", cost:"", duration:"15 min"},
+        {type:"event", time:"08:00 – 10:00", activity:"Walls of Dubrovnik", detail:"Recorrido completo de las murallas medievales. Vistas únicas de la ciudad y el mar. Llegar antes que los cruceros.", cost:"~35€", duration:"2h"},
+        {type:"transfer", time:"10:00 – 10:15", activity:"Caminata a la playa", detail:"Bajada directa a Banje Beach.", cost:"", duration:"15 min"},
+        {type:"event", time:"10:15 – 13:00", activity:"Banje Beach", detail:"Playa muy cerca del centro histórico. Agua cristalina. Tumbonas disponibles.", cost:"Gratis (tumbonas ~20€)", duration:"2h45"},
+        {type:"event", time:"13:00 – 15:00", activity:"Descanso en el hotel", detail:"Pausa para comer y descansar del sol antes de la segunda parte del día.", cost:"", duration:"2h"},
+        {type:"event", time:"15:00 – 17:30", activity:"Kayak en el mar", detail:"Excursión en kayak de mar desde la zona de Old Town. Rodeás las murallas desde el agua. TOP.", cost:"~40–50€", duration:"2h30"},
+        {type:"transfer", time:"17:30 – 18:00", activity:"Regreso al alojamiento", detail:"Caminata de vuelta.", cost:"", duration:"30 min"},
+        {type:"event", time:"18:30 – 20:30", activity:"Old Town — paseo y cena", detail:"Última noche de paseo por el casco histórico. Cena en alguno de los restaurantes con terraza.", cost:"", duration:"2h"},
+      ]
+    },
+    {
+      date:"25 jun", label:"Playa Sveti Jakov",
+      items:[
+        {type:"transfer", time:"10:00 – 10:20", activity:"Bus a la playa", detail:"Línea de bus local desde Old Town hacia Sveti Jakov.", cost:"~2–3€", duration:"20 min"},
+        {type:"transfer", time:"10:20 – 10:30", activity:"Bajada de escaleras", detail:"Bastantes escalones. ⚠️ Tener en cuenta para el regreso con todo el equipo de playa.", cost:"", duration:"10 min"},
+        {type:"event", time:"10:30 – 15:30", activity:"Sveti Jakov Beach", detail:"Una de las playas más espectaculares de Dubrovnik. Agua increíble, menos turistas que Banje. Rodeada de acantilados.", cost:"Gratis", duration:"5h"},
+        {type:"transfer", time:"15:30 – 15:40", activity:"Subir escaleras", detail:"La parte más cansada del día. El agua habrá valido todo.", cost:"", duration:"10 min"},
+        {type:"transfer", time:"15:40 – 16:00", activity:"Bus de vuelta", detail:"Regreso en bus a Old Town.", cost:"~2–3€", duration:"20 min"},
+        {type:"event", time:"16:30 – 18:30", activity:"Old Town — paseo libre", detail:"Últimas vueltas por las calles de adoquines.", cost:"Gratis", duration:"2h"},
+        {type:"event", time:"19:00 – 20:30", activity:"Última noche en Dubrovnik", detail:"Cena especial de cierre. Explorar los bares con vista al mar.", cost:"", duration:"1h30"},
+      ]
+    },
+    {
+      date:"26 jun", label:"Ferry → Hvar",
+      items:[
+        {type:"transfer", time:"06:30 – 07:00", activity:"Traslado al puerto", detail:"Taxi recomendado. Llegar bien antes de la salida.", cost:"~10–15€", duration:"30 min"},
+        {type:"event", time:"08:00", activity:"Ferry Dubrovnik → Hvar", detail:"Salida del ferry. El trayecto dura aprox. 3–4 horas con paradas.", cost:"Ferry", duration:"~3–4h"},
+      ]
+    }
+  ]
+},
+{
+  name:"Hvar", country:"Croacia", flag:"🇭🇷", dates:"26 – 29 jun", daysLabel:"Días 7–9", transport:"⛴",
+  image:"https://images.unsplash.com/photo-1598430778079-49d5ce2e4949?w=1200&q=80",
+  days:[
+    {
+      date:"26 jun", label:"Llegada a Hvar",
+      items:[
+        {type:"event", time:"11:40 – 12:30", activity:"Llegada en ferry + check-in", detail:"Llegada al puerto de Hvar Town. Dejar las valijas e instalarse.", cost:"", duration:"50 min"},
+        {type:"event", time:"12:30 – 13:00", activity:"Caminar por Hvar Town", detail:"Primera impresión del pueblo. Todo a pie desde el puerto.", cost:"Gratis", duration:"30 min"},
+        {type:"event", time:"13:00 – 15:30", activity:"Recorrer Hvar Town", detail:"La plaza principal, la fortaleza de lejos, el puerto. Almorzar en algún restaurante del puerto.", cost:"Gratis", duration:"2h30"},
+        {type:"transfer", time:"15:30 – 16:00", activity:"Caminata al beach club", detail:"20–30 minutos a pie siguiendo el camino costero.", cost:"", duration:"20–30 min"},
+        {type:"event", time:"16:00 – 19:00", activity:"Hula Hula Beach Bar", detail:"Beach club icónico de Hvar. Música en vivo, tumbonas, bar directo al agua. Ambiente increíble.", cost:"Consumición", duration:"3h"},
+        {type:"transfer", time:"19:00 – 19:20", activity:"Caminata de vuelta", detail:"Regreso al centro de Hvar.", cost:"", duration:"20 min"},
+        {type:"event", time:"19:30 – 20:30", activity:"Fortica Fortress — atardecer", detail:"Subida leve a la fortaleza para ver el atardecer sobre las Islas Pakleni. Vista increíble.", cost:"~10€", duration:"1h"},
+      ]
+    },
+    {
+      date:"27 jun", label:"Pakleni Islands + fiesta",
+      items:[
+        {type:"transfer", time:"10:00 – 10:20", activity:"Taxi boat a Pakleni", detail:"Sale del puerto de Hvar Town. Piden ~10–20€ por el trayecto.", cost:"~10–20€", duration:"20 min"},
+        {type:"event", time:"10:30 – 17:30", activity:"Pakleni Islands", detail:"Archipiélago frente a Hvar con calas de agua increíble. Snorkeling, sol y relax en playas de piedra blanca.", cost:"", duration:"7h"},
+        {type:"transfer", time:"17:30 – 18:00", activity:"Regreso a Hvar", detail:"Taxi boat de vuelta al puerto.", cost:"~10–20€", duration:"30 min"},
+        {type:"event", time:"19:30 – 23:30", activity:"Carpe Diem Beach Club", detail:"El club de playa más famoso de Croacia. Se llega en barco. Fiesta hasta tarde en una islita frente a Hvar.", cost:"~30–50€", duration:"4h"},
+      ]
+    },
+    {
+      date:"28 jun", label:"Blue Cave + Vis Island",
+      items:[
+        {type:"event", time:"07:30 – 08:00", activity:"Check-in del tour — puerto", detail:"Llegar antes al puerto para el check-in de la excursión en lancha. Día largo pero TOP.", cost:"", duration:"30 min"},
+        {type:"event", time:"08:00 – 18:00", activity:"Excursión Blue Cave + Vis Island", detail:"Día completo en lancha rápida. Cueva Azul (bioluminiscencia), Cueva Verde, Isla Vis, Isla Budikovac (laguna esmeralda). Lo más increíble del viaje por Croacia.", cost:"~100–150€", duration:"10h"},
+        {type:"event", time:"18:00 – 19:00", activity:"Regreso + descanso en Hvar", detail:"Llegar cansadas pero felices. Ducha y descanso.", cost:"", duration:"1h"},
+        {type:"event", time:"20:00 – 23:00", activity:"Cena / salida por Hvar Town", detail:"Plan más tranquilo. Cena en algún restaurante del centro y paseo nocturno.", cost:"", duration:"3h"},
+      ]
+    },
+    {
+      date:"29 jun", label:"Ferry → Split",
+      items:[
+        {type:"event", time:"Mañana", activity:"Ferry Hvar → Split", detail:"Trayecto corto de ~1 hora. Llegar al puerto con tiempo.", cost:"Ferry", duration:"~1h"},
+      ]
+    }
+  ]
+},
+{
+  name:"Split", country:"Croacia", flag:"🇭🇷", dates:"29 jun – 1 jul", daysLabel:"Días 10–11", transport:"✈",
+  image:"https://images.unsplash.com/photo-1555992457-b8fefdd09069?w=1200&q=80",
+  days:[
+    {
+      date:"29 jun", label:"Split — llegada",
+      items:[
+        {type:"event", time:"08:00 – 09:00", activity:"Ferry Hvar → Split + traslado", detail:"Llegada al puerto de Split. Traslado al alojamiento.", cost:"~5–10€", duration:"1h"},
+        {type:"event", time:"09:00 – 10:30", activity:"Check-in / dejar valijas", detail:"Instalarse o dejar equipaje si el cuarto no está listo.", cost:"", duration:"1h30"},
+        {type:"event", time:"10:30 – 13:00", activity:"Palacio de Diocleciano", detail:"Palacio romano del s. IV perfectamente integrado en la ciudad moderna. Imperdible. Recorrer los sótanos y la Catedral de San Duje.", cost:"Gratis", duration:"2h30"},
+        {type:"event", time:"13:00 – 15:00", activity:"Riva Promenade", detail:"Paseo marítimo con bares y vistas al puerto. Almorzar con vista al mar.", cost:"Gratis", duration:"2h"},
+        {type:"event", time:"16:00 – 18:30", activity:"Playa Bačvice (opcional)", detail:"Playa urbana muy popular, a 10 min del centro. Famosa por el picigin, juego tradicional croata.", cost:"Gratis", duration:"2h30"},
+        {type:"event", time:"Noche", activity:"Split Old Town — cena y salida", detail:"El casco histórico se anima de noche. Bares dentro del palacio romano.", cost:"", duration:""},
+      ]
+    },
+    {
+      date:"30 jun", label:"Zlatni Rat + Trogir",
+      items:[
+        {type:"event", time:"08:00 – 09:00", activity:"Ferry a Isla Brač → Supetar", detail:"Ferry desde el puerto de Split hasta Supetar en la isla Brač.", cost:"~10–20€", duration:"1h"},
+        {type:"transfer", time:"09:00 – 10:00", activity:"Bus / taxi a Bol", detail:"Desde Supetar hasta el pueblo de Bol, donde está la playa. Imprescindible para llegar.", cost:"~10–25€", duration:"1h"},
+        {type:"event", time:"10:00 – 14:00", activity:"Zlatni Rat", detail:"La playa más famosa de Croacia y con razón. Lengüeta de piedras blancas que entra al mar turquesa. Absolutamente TOP.", cost:"Gratis", duration:"4h"},
+        {type:"transfer", time:"14:00 – 15:00", activity:"Vuelta a Supetar", detail:"Bus o taxi de regreso al puerto de Supetar.", cost:"~10–25€", duration:"1h"},
+        {type:"event", time:"15:30 – 16:30", activity:"Ferry Brač → Split", detail:"Regreso en ferry a Split.", cost:"~10–20€", duration:"1h"},
+        {type:"transfer", time:"17:00 – 17:30", activity:"Bus a Trogir", detail:"Bus local desde Split hasta Trogir. ~30 min.", cost:"~5€", duration:"30 min"},
+        {type:"event", time:"17:30 – 19:30", activity:"Trogir", detail:"Ciudad medieval declarada Patrimonio de la Humanidad. Pequeña pero preciosa. La catedral de San Lorenzo vale todo.", cost:"Gratis", duration:"2h"},
+        {type:"transfer", time:"19:30 – 20:00", activity:"Vuelta a Split", detail:"Bus de regreso.", cost:"~5€", duration:"30 min"},
+      ]
+    },
+    {
+      date:"1 jul", label:"Split → Kefalonia",
+      items:[
+        {type:"event", time:"Mañana", activity:"Vuelo Split → Kefalonia", detail:"Traslado al aeropuerto y vuelo hacia Kefalonia. Escala probable.", cost:"Vuelo + Auto", duration:""},
+        {type:"event", time:"16:00 – 17:00", activity:"Llegada a Argostoli — check-in", detail:"Recoger el auto alquilado (imprescindible en Kefalonia) e instalarse.", cost:"", duration:"1h"},
+      ]
+    }
+  ]
+},
+{
+  name:"Kefalonia", country:"Grecia", flag:"🇬🇷", dates:"1 – 4 jul", daysLabel:"Días 12–14", transport:"⛴",
+  image:"https://images.unsplash.com/photo-1601581975053-7655b4f61a2f?w=1200&q=80",
+  days:[
+    {
+      date:"1 jul", label:"Llegada — Petani Beach",
+      items:[
+        {type:"event", time:"17:00 – 17:30", activity:"Traslado a Petani Beach", detail:"En auto. 30 min desde Argostoli por caminos curvosos con vistas increíbles.", cost:"", duration:"30 min"},
+        {type:"event", time:"17:30 – 20:00", activity:"Petani Beach — playa y atardecer", detail:"Una de las mejores playas de Kefalonia. Aguas azul profundo y acantilados blancos. Muy buen atardecer.", cost:"Gratis", duration:"2h30"},
+        {type:"transfer", time:"20:00 – 20:30", activity:"Vuelta a Argostoli", detail:"30 min en auto de regreso.", cost:"", duration:"30 min"},
+        {type:"event", time:"Noche", activity:"Paseo y cena en Argostoli", detail:"El puerto de la capital es muy lindo de noche. Restaurantes con vista al mar.", cost:"", duration:""},
+      ]
+    },
+    {
+      date:"2 jul", label:"Norte de Kefalonia",
+      items:[
+        {type:"transfer", time:"09:00 – 10:15", activity:"Traslado a Myrtos Beach", detail:"En auto. 1h15 de curvas pero vale absolutamente todo. Manejar con calma.", cost:"", duration:"1h15"},
+        {type:"event", time:"10:15 – 13:00", activity:"Myrtos Beach", detail:"Considerada una de las mejores playas de Europa. Acantilados blancos y agua turquesa increíble. La mejor vista.", cost:"Gratis", duration:"2h45"},
+        {type:"transfer", time:"13:00 – 13:40", activity:"Traslado a Assos Village", detail:"40 min en auto por la costa norte.", cost:"", duration:"40 min"},
+        {type:"event", time:"13:40 – 15:30", activity:"Assos Village", detail:"Pueblo pintoresco en una península. Casas de colores y un castillo veneciano. Almorzar acá.", cost:"Gratis", duration:"1h50"},
+        {type:"transfer", time:"15:30 – 16:00", activity:"Traslado a Fiskardo", detail:"30 min en auto hasta el pueblo más chic de la isla.", cost:"", duration:"30 min"},
+        {type:"event", time:"16:00 – 19:30", activity:"Fiskardo — paseo y atardecer", detail:"El pueblo más bonito de Kefalonia. Puerto rodeado de yates, casas venecianas y restaurantes de lujo. Muy lindo para cerrar el día.", cost:"Gratis", duration:"3h30"},
+        {type:"transfer", time:"19:30 – 21:00", activity:"Vuelta a Argostoli", detail:"1h30 en auto. Manejar tranquilo de noche por las curvas.", cost:"", duration:"1h30"},
+      ]
+    },
+    {
+      date:"3 jul", label:"Cuevas y playas",
+      items:[
+        {type:"transfer", time:"09:30 – 10:00", activity:"Traslado a Melissani Cave", detail:"30 min en auto desde Argostoli.", cost:"", duration:"30 min"},
+        {type:"event", time:"10:00 – 11:00", activity:"Melissani Cave", detail:"Cueva con lago subterráneo. Bote en el interior donde la luz del sol traspasa el techo y tiñe el agua de azul. Muy única.", cost:"~10€", duration:"1h"},
+        {type:"transfer", time:"11:00 – 11:10", activity:"Traslado", detail:"10 min en auto a la siguiente cueva.", cost:"", duration:"10 min"},
+        {type:"event", time:"11:10 – 12:00", activity:"Drogarati Cave (opcional)", detail:"Cueva estalactítica con gran sala natural. Opcional pero recomendable si hay ganas.", cost:"~5€", duration:"50 min"},
+        {type:"event", time:"12:15 – 15:30", activity:"Antisamos Beach", detail:"Playa rodeada de colinas verdes y agua increíble. Mucho más tranquila que Myrtos. Agua increíble.", cost:"Gratis", duration:"3h"},
+        {type:"transfer", time:"16:30 – 17:15", activity:"Vuelta a Argostoli", detail:"45 min en auto.", cost:"", duration:"45 min"},
+        {type:"event", time:"Tarde", activity:"Paseo final por Argostoli", detail:"Últimas horas en la isla. Paseo por el puerto, recuerdos.", cost:"", duration:""},
+      ]
+    },
+    {
+      date:"4 jul", label:"Ferry + auto → Zakynthos",
+      items:[
+        {type:"event", time:"Mañana", activity:"Ferry Kefalonia → Zakynthos", detail:"Trayecto en ferry + traslado en auto alquilado. Llegar al alojamiento.", cost:"Ferry + Auto", duration:""},
+      ]
+    }
+  ]
+},
+{
+  name:"Zakynthos", country:"Grecia", flag:"🇬🇷", dates:"4 – 6 jul", daysLabel:"Días 15–16", transport:"✈",
+  image:"https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=1200&q=80",
+  days:[
+    {
+      date:"4 jul", label:"Llegada a Zakynthos",
+      items:[
+        {type:"event", time:"Tarde", activity:"Llegada — instalarse", detail:"Check-in en el alojamiento. Descansar del trayecto.", cost:"", duration:""},
+        {type:"event", time:"Tarde/Noche", activity:"Primer paseo por la ciudad", detail:"Zakynthos Town tiene un paseo marítimo muy lindo.", cost:"Gratis", duration:""},
+      ]
+    },
+    {
+      date:"5 jul", label:"Playas de Zakynthos",
+      items:[
+        {type:"event", time:"Todo el día", activity:"Exploración en auto por la isla", detail:"Principales paradas: Navagio Beach (Shipwreck Beach, acceso en barco), Blue Caves, Porto Limnionas, Laganas Beach.", cost:"Auto + barco ~15€", duration:""},
+      ]
+    },
+    {
+      date:"6 jul", label:"Vuelo → Atenas",
+      items:[
+        {type:"event", time:"Mañana", activity:"Preparar maletas", detail:"Últimas horas en Zakynthos.", cost:"", duration:""},
+        {type:"event", time:"Tarde", activity:"Vuelo Zakynthos → Atenas", detail:"Vuelo corto. Llegada a Atenas, traslado al alojamiento.", cost:"Vuelo", duration:"~45 min"},
+      ]
+    }
+  ]
+},
+{
+  name:"Atenas", country:"Grecia", flag:"🇬🇷", dates:"6 – 8 jul", daysLabel:"Días 17–18", transport:"✈",
+  image:"https://images.unsplash.com/photo-1555993539-1732b0258235?w=1200&q=80",
+  days:[
+    {
+      date:"6 jul", label:"Llegada — Atenas clásica",
+      items:[
+        {type:"event", time:"09:30 – 10:30", activity:"Llegada al aeropuerto + traslado", detail:"Metro o taxi al centro. ~10–40€ según medio.", cost:"Metro ~10€ / Taxi ~40€", duration:"1h"},
+        {type:"event", time:"10:30 – 12:00", activity:"Check-in / dejar valijas", detail:"Instalarse en el alojamiento.", cost:"", duration:"1h30"},
+        {type:"event", time:"12:00 – 14:30", activity:"Barrio Plaka", detail:"El barrio más antiguo de Atenas. Calles angostas, tiendas de souvenirs, casas neoclásicas y mucho encanto.", cost:"Gratis", duration:"2h30"},
+        {type:"event", time:"14:30 – 16:00", activity:"Monastiraki", detail:"Mercado de pulgas, mezquita otomana, ambiente del mejor. Almorzar en algún local de la zona.", cost:"Gratis", duration:"1h30"},
+        {type:"transfer", time:"16:00 – 16:30", activity:"Caminata", detail:"Hacia Ancient Agora.", cost:"", duration:"30 min"},
+        {type:"event", time:"16:30 – 18:00", activity:"Ancient Agora of Athens", detail:"Ruinas del ágora ateniense con el Templo de Hefesto (uno de los mejor conservados de Grecia). Primer contacto histórico.", cost:"~10€", duration:"1h30"},
+        {type:"event", time:"18:30 – 20:00", activity:"Colina Licabeto (Lycabettus Hill)", detail:"La colina más alta de Atenas. Subir a pie o en funicular. Vista 360° de la ciudad y la Acrópolis. Atardecer increíble.", cost:"Gratis", duration:"1h30"},
+      ]
+    },
+    {
+      date:"7 jul", label:"La Acrópolis",
+      items:[
+        {type:"event", time:"08:30 – 11:00", activity:"Acrópolis + Partenón", detail:"Ir temprano (antes de las 9) para evitar calor y aglomeraciones. La cima del mundo antiguo. El Partenón, el Erecteion, los Propileos.", cost:"~20€", duration:"2h30"},
+        {type:"transfer", time:"11:00 – 11:15", activity:"Bajada caminando", detail:"Hacia el Museo de la Acrópolis.", cost:"", duration:"15 min"},
+        {type:"event", time:"11:15 – 13:00", activity:"Museo de la Acrópolis", detail:"Uno de los mejores museos de Grecia. Esculturas originales del Partenón y vistas a la Acrópolis desde el interior. Muy recomendable.", cost:"~15€", duration:"1h45"},
+        {type:"event", time:"13:00 – 14:00", activity:"Pausa y almuerzo", detail:"Descanso necesario. Almorzar en la zona de Plaka o Koukaki.", cost:"", duration:"1h"},
+        {type:"event", time:"14:00 – 15:30", activity:"Templo de Zeus Olímpico", detail:"Las columnas corintias más grandes de la antigüedad. Rápido pero impresionante.", cost:"~8€", duration:"1h30"},
+        {type:"transfer", time:"15:30 – 16:00", activity:"Caminata", detail:"Hacia el Estadio Panatenaico.", cost:"", duration:"30 min"},
+        {type:"event", time:"16:00 – 18:00", activity:"Estadio Panatenaico (Kalimarmaro)", detail:"Estadio olímpico de mármol blanco del s. IV a.C. Se puede correr en la pista olímpica. Diferente a las ruinas.", cost:"~10€", duration:"2h"},
+      ]
+    },
+    {
+      date:"8 jul", label:"Vuelo → Mykonos",
+      items:[
+        {type:"event", time:"Mañana", activity:"Tiempo libre en Atenas", detail:"Desayuno tranquilo, últimas compras en Monastiraki o cafés de Koukaki.", cost:"", duration:""},
+        {type:"event", time:"Tarde", activity:"Vuelo Atenas → Mykonos", detail:"Vuelo corto de ~45 min. Llegada a Mykonos.", cost:"Vuelo", duration:"~45 min"},
+      ]
+    }
+  ]
+},
+{
+  name:"Mykonos", country:"Grecia", flag:"🇬🇷", dates:"8 – 11 jul", daysLabel:"Días 19–22", transport:"✈",
+  image:"https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=1200&q=80",
+  days:[
+    {
+      date:"8 jul", label:"Llegada a Mykonos",
+      items:[
+        {type:"event", time:"Tarde", activity:"Llegada — Mykonos Town (Chora)", detail:"Check-in. Primer paseo por el laberinto de calles blancas y azules.", cost:"", duration:""},
+        {type:"event", time:"Tarde/Noche", activity:"Barrio Little Venice + Molinos", detail:"Los molinos de viento al atardecer son el símbolo de Mykonos. Little Venice con los bares sobre el agua.", cost:"Gratis", duration:""},
+      ]
+    },
+    {
+      date:"9 jul", label:"Excursión a Paros",
+      items:[
+        {type:"event", time:"Mañana", activity:"Ferry Mykonos → Paros", detail:"Trayecto corto en ferry de alta velocidad.", cost:"Ferry", duration:"~45 min"},
+        {type:"event", time:"Todo el día", activity:"Paros — playas y Parikia", detail:"Isla tranquila y más auténtica que Mykonos. Parikia (capital) y playas como Kolymbithres y Naoussa.", cost:"", duration:""},
+        {type:"event", time:"Noche", activity:"Ferry de regreso a Mykonos", detail:"Vuelta por la tarde/noche.", cost:"Ferry", duration:""},
+      ]
+    },
+    {
+      date:"10 jul", label:"Playas de Mykonos",
+      items:[
+        {type:"event", time:"Todo el día", activity:"Playas icónicas", detail:"Super Paradise Beach y Paradise Beach — las más famosas de la isla. Agua excelente y ambiente veraniego al máximo.", cost:"", duration:""},
+        {type:"event", time:"Noche", activity:"Vida nocturna de Mykonos", detail:"Mykonos es famosa por su escena nocturna. Última noche a full.", cost:"", duration:""},
+      ]
+    },
+    {
+      date:"11 jul", label:"Vuelo nocturno → Madrid",
+      items:[
+        {type:"event", time:"Tarde/Noche", activity:"Últimas horas en Mykonos", detail:"Paseo de despedida por Chora. Compras de recuerdos.", cost:"", duration:""},
+        {type:"event", time:"Noche", activity:"Vuelo Mykonos → Madrid", detail:"Vuelo nocturno. Llegada a Madrid a la madrugada del día 12.", cost:"Vuelo", duration:"~4h"},
+      ]
+    }
+  ]
+},
+{
+  name:"Madrid", country:"España", flag:"🇪🇸", dates:"12 – 13 jul", daysLabel:"Días 23–24", transport:"✈",
+  image:"https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=1200&q=80",
+  days:[
+    {
+      date:"12 jul", label:"Madrid — Vaticano + compras",
+      items:[
+        {type:"event", time:"07:30 – 08:00", activity:"Traslado al Vaticano (Roma)", detail:"Ir temprano para evitar colas. Reserva anticipada clave.", cost:"Metro / taxi", duration:"30 min"},
+        {type:"event", time:"08:00 – 10:30", activity:"Museos Vaticanos", detail:"Colección de arte más grande del mundo. Recorrer en 2–3 horas si tenés entrada reservada.", cost:"Entrada anticipada ~€€", duration:"2h30"},
+        {type:"event", time:"10:30 – 11:00", activity:"Capilla Sixtina", detail:"Parte final del recorrido de los museos. El fresco del Juicio Final de Miguel Ángel.", cost:"Incluido", duration:"30 min"},
+        {type:"event", time:"11:15 – 12:30", activity:"Basílica de San Pedro", detail:"Entrada gratuita. Puede haber cola variable. Subir a la cúpula para vista de Roma.", cost:"Gratis (cúpula ~€)", duration:"1h15"},
+        {type:"event", time:"13:00 – 14:00", activity:"Almuerzo cerca del Vaticano", detail:"Alejarse un poco de la zona turística para mejor relación precio/calidad.", cost:"~€€", duration:"1h"},
+        {type:"event", time:"14:30 – 16:30", activity:"Compras — Via Cola di Rienzo", detail:"Buen equilibrio precio/calidad. Zara, Mango y marcas europeas.", cost:"~€€", duration:"2h"},
+        {type:"event", time:"16:30 – 18:30", activity:"Compras — Via del Corso", detail:"Más variedad. La calle comercial más larga de Roma.", cost:"~€€", duration:"2h"},
+        {type:"event", time:"18:30 – 19:30", activity:"Via Condotti (opcional)", detail:"Zona de lujo. Gucci, Prada, Louis Vuitton. Solo para mirar (o no).", cost:"~€€€", duration:"1h"},
+        {type:"event", time:"Noche", activity:"Cena de cierre del viaje", detail:"Último gran asado italiano o español. Centro o Trastevere.", cost:"~€€", duration:""},
+      ]
+    },
+    {
+      date:"13 jul", label:"Vuelo a casa",
+      items:[
+        {type:"event", time:"20:05", activity:"Vuelo Madrid → Buenos Aires", detail:"Salida desde Madrid Barajas. Llegada a Buenos Aires el 14 de julio. ¡Fin de la aventura!", cost:"Vuelo", duration:"~13h"},
+      ]
+    }
+  ]
+}
+];
+
+let currentStop = 1;
+let currentDay = 0;
+
+function buildRoute() {
+  const track = document.getElementById('routeTrack');
+  track.innerHTML = '';
+  stops.forEach((s, i) => {
+    if (i > 0) {
+      const conn = document.createElement('div');
+      conn.className = 'route-conn';
+      conn.innerHTML = `<span class="conn-icon">${s.transport}</span><div class="conn-dash"></div>`;
+      track.appendChild(conn);
+    }
+    const node = document.createElement('div');
+    node.className = 'route-stop' + (i === currentStop ? ' active' : '');
+    node.innerHTML = `<div class="stop-dot"></div><span class="stop-name">${s.name}</span>`;
+    node.onclick = () => { currentStop = i; currentDay = 0; buildRoute(); buildCard(); scrollToCard(); };
+    track.appendChild(node);
+  });
+}
+
+function buildCard() {
+  const section = document.getElementById('destSection');
+  section.innerHTML = '';
+  const s = stops[currentStop];
+
+  const tabsHtml = s.days.map((d, i) =>
+    `<button class="day-tab${i === currentDay ? ' active' : ''}" onclick="switchDay(${i})">${d.date} — ${d.label}</button>`
+  ).join('');
+
+  const schedulesHtml = s.days.map((d, i) => {
+    const itemsHtml = d.items.map((item, idx) => {
+      if (item.type === 'transfer') {
+        return `<div class="transfer-row">
+          <div class="tl-time">${item.time}</div>
+          <div class="tl-dot-col"><div class="tl-dot" style="background:#333;border-color:#444"></div>${idx < d.items.length-1 ? '<div class="tl-line"></div>' : ''}</div>
+          <div class="tl-content"><div class="tl-activity">${item.activity}</div></div>
+        </div>`;
+      }
+      const costClass = item.cost === 'Gratis' ? 'free' : '';
+      return `<div class="timeline-item">
+        <div class="tl-time">${item.time}</div>
+        <div class="tl-dot-col">
+          <div class="tl-dot" style="border-color:${s.color||'#666'}"></div>
+          ${idx < d.items.length-1 ? '<div class="tl-line"></div>' : ''}
+        </div>
+        <div class="tl-content">
+          <div class="tl-activity">${item.activity}</div>
+          ${item.detail ? `<div class="tl-detail">${item.detail}</div>` : ''}
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+            ${item.cost ? `<span class="tl-cost ${costClass}">${item.cost}</span>` : ''}
+            ${item.duration ? `<span class="tl-duration">${item.duration}</span>` : ''}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+    return `<div class="schedule${i === currentDay ? ' active' : ''}" id="schedule_${i}">
+      <div class="schedule-header">
+        <div class="schedule-date">${d.date} — ${d.label}</div>
+      </div>
+      ${itemsHtml}
+    </div>`;
+  }).join('');
+
+  const card = document.createElement('div');
+  card.className = 'dest-card active';
+  card.id = 'destCard';
+  card.innerHTML = `
+    <div class="dest-image-wrap">
+      <img src="${s.image}" alt="${s.name}" loading="lazy">
+      <div class="dest-image-overlay"></div>
+      <div class="dest-image-text">
+        <div>
+          <div class="dest-country-badge"><span style="font-size:15px">${s.flag}</span>${s.country}</div>
+          <div class="dest-name">${s.name}</div>
+          <div class="dest-dates">${s.dates}</div>
+        </div>
+        <div class="dest-days-badge">${s.daysLabel}</div>
+      </div>
+    </div>
+    <div class="dest-body">
+      <div class="days-tabs" id="daysTabs">${tabsHtml}</div>
+      <div id="scheduleContainer">${schedulesHtml}</div>
+    </div>
+    <div class="dest-nav">
+      <button class="nav-btn" onclick="navigate(-1)" ${currentStop===0?'disabled':''}>← ${currentStop > 0 ? stops[currentStop-1].name : ''}</button>
+      <span class="nav-counter">${currentStop+1} / ${stops.length}</span>
+      <button class="nav-btn" onclick="navigate(1)" ${currentStop===stops.length-1?'disabled':''}>→ ${currentStop < stops.length-1 ? stops[currentStop+1].name : ''}</button>
+    </div>
+  `;
+  section.appendChild(card);
+}
+
+function switchDay(idx) {
+  currentDay = idx;
+  document.querySelectorAll('.day-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.schedule').forEach((s, i) => s.classList.toggle('active', i === idx));
+}
+
+function navigate(dir) {
+  currentStop = Math.max(0, Math.min(stops.length - 1, currentStop + dir));
+  currentDay = 0;
+  buildRoute(); buildCard(); scrollToCard();
+}
+
+function scrollToCard() {
+  setTimeout(() => {
+    const el = document.getElementById('destSection');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+}
+
+const colors = { Italia:'#D85A30', Croacia:'#185FA5', Grecia:'#1D9E75', España:'#BA7517', Argentina:'#888' };
+stops.forEach(s => { s.color = colors[s.country] || '#888'; });
+
+function copyText(btn) {
+  const text = stops.map(s =>
+    `${s.flag} ${s.name} — ${s.country} (${s.dates})\n` +
+    s.days.map(d => `  📅 ${d.date} — ${d.label}\n` +
+      d.items.filter(i=>i.type!=='transfer').map(i => `    ${i.time}: ${i.activity}${i.cost ? ' ['+i.cost+']' : ''}`).join('\n')
+    ).join('\n')
+  ).join('\n\n');
+  navigator.clipboard.writeText(`🗺 EUROPA 2026\n19 jun – 13 jul · 25 días · 4 países\n\n${text}`).then(() => {
+    const orig = btn.textContent; btn.textContent = '¡Copiado!';
+    setTimeout(() => btn.textContent = orig, 2000);
+  });
+}
+
+buildRoute(); buildCard();
+</script>
+</body>
+</html>
