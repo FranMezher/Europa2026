@@ -5,190 +5,855 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈️</text></svg>">
+<meta name="description" content="Itinerario completo del viaje por Europa 2026. 25 días por Italia, Croacia, Grecia y España.">
+<meta property="og:title" content="Europa 2026 — Nuestro viaje">
+<meta property="og:description" content="25 días · 9 destinos · 4 países. Italia · Croacia · Grecia · España. Junio–Julio 2026.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://images.unsplash.com/photo-1515542622106-078a2b4b9e7c?w=1200&q=80">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <title>Europa 2026 — Nuestro viaje</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #0a0a0a;
-  --surface: #141414;
-  --surface2: #1e1e1e;
-  --surface3: #252525;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.14);
-  --text: #f0ede8;
-  --text2: #9e9b94;
-  --text3: #5e5c57;
-  --accent: #e8d5a3;
-  --accent2: rgba(232,213,163,0.12);
-  --radius: 12px;
-  --radius-sm: 8px;
+  --space: #030712;
+  --space2: #050d1a;
+  --surface-glass: rgba(6,18,42,0.6);
+  --surface-glass2: rgba(6,18,42,0.9);
+  --cyan: #00f5ff;
+  --cyan-dim: rgba(0,245,255,0.1);
+  --cyan-glow: 0 0 20px rgba(0,245,255,0.4), 0 0 60px rgba(0,245,255,0.12);
+  --blue: #4169e1;
+  --violet: #8b5cf6;
+  --magenta: #f43f5e;
+  --text: #e2eaf8;
+  --text2: #7b90b8;
+  --text3: #647a9a;
+  --border: rgba(0,245,255,0.06);
+  --border2: rgba(0,245,255,0.18);
+  --radius: 16px;
+  --radius-sm: 10px;
 }
 html { scroll-behavior: smooth; }
-body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-min-height: 100svh; min-height: -webkit-fill-available; overflow-x: hidden; }
+body {
+  background: var(--space);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100svh;
+  min-height: -webkit-fill-available;
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(65,105,225,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(139,92,246,0.05) 0%, transparent 60%);
+}
 
-/* HERO */
-.hero { position: relative; min-height: 100svh; min-height: -webkit-fill-available; min-height: 560px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
-.hero-bg { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1555992336-03a23c7b20ee?w=1600&q=80') center/cover no-repeat; filter: brightness(0.3); }
-.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, var(--bg) 100%); }
-.hero-content { position: relative; z-index: 2; padding: 2rem; }
-.hero-eyebrow { font-size: 11px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 1rem; }
-.hero-title { font-size: clamp(48px, 10vw, 96px); font-weight: 300; line-height: 1; letter-spacing: -0.03em; color: var(--text); margin-bottom: 1rem; }
-.hero-title em { font-style: italic; color: var(--accent); }
-.hero-sub { font-size: 16px; color: var(--text2); margin-bottom: 2.5rem; font-weight: 300; }
-.hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
-.hstat { text-align: center; }
-.hstat-n { font-size: 32px; font-weight: 300; color: var(--text); }
-.hstat-l { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 2px; }
-.scroll-hint { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); font-size: 11px; color: var(--text3); letter-spacing: 0.15em; text-transform: uppercase; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--text3), transparent); animation: scrollAnim 1.8s ease-in-out infinite; }
-@keyframes scrollAnim { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  min-height: -webkit-fill-available;
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+#starCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+.hero-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,245,255,0.012) 2px, rgba(0,245,255,0.012) 4px);
+  pointer-events: none;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 2rem;
+  max-width: 820px;
+  width: 100%;
+}
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  opacity: 0.75;
+}
+.eyebrow-dot {
+  display: inline-block;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 6px var(--cyan);
+}
+.hero-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(30px, 7vw, 70px);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  margin-bottom: 0.9rem;
+  position: relative;
+  display: inline-block;
+}
+.hero-title.glitch::before,
+.hero-title.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+}
+.hero-title.glitch::before {
+  color: var(--cyan);
+  animation: glitch-a 9s infinite;
+  clip-path: polygon(0 25%, 100% 25%, 100% 50%, 0 50%);
+  left: -2px;
+}
+.hero-title.glitch::after {
+  color: var(--magenta);
+  animation: glitch-b 9s infinite;
+  clip-path: polygon(0 60%, 100% 60%, 100% 78%, 0 78%);
+  left: 2px;
+}
+@keyframes glitch-a {
+  0%,88%,100% { opacity:0; transform:translate(0); }
+  90% { opacity:0.85; transform:translate(-3px,1px); }
+  93% { opacity:0.6; transform:translate(2px,-1px); }
+  96% { opacity:0.9; transform:translate(-1px,2px); }
+}
+@keyframes glitch-b {
+  0%,88%,100% { opacity:0; transform:translate(0); }
+  91% { opacity:0.7; transform:translate(3px,-1px); }
+  94% { opacity:0.5; transform:translate(-2px,1px); }
+  97% { opacity:0.8; transform:translate(1px,-2px); }
+}
+.hero-sub {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(8px, 1.3vw, 10px);
+  letter-spacing: 0.22em;
+  color: var(--text2);
+  text-transform: uppercase;
+  margin-bottom: 2.5rem;
+}
+/* Countdown */
+.countdown-wrapper { margin-bottom: 2.5rem; }
+.countdown-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface-glass);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 16px 22px;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--cyan-glow), inset 0 1px 0 rgba(0,245,255,0.08);
+}
+.cd-unit { display:flex; flex-direction:column; align-items:center; min-width:50px; }
+.cd-num {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(20px, 3.5vw, 32px);
+  font-weight: 700;
+  color: var(--cyan);
+  text-shadow: 0 0 18px rgba(0,245,255,0.55);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.cd-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: var(--text3);
+  margin-top: 4px;
+}
+.cd-sep {
+  font-family: 'Orbitron', monospace;
+  font-size: 20px;
+  color: var(--text3);
+  margin-bottom: 14px;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
+/* Hero stats */
+.hero-stats {
+  display: flex;
+  gap: 28px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+.hstat { display:flex; flex-direction:column; align-items:center; min-width:60px; }
+.hstat-n {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(22px, 3.2vw, 34px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+.hstat-l {
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--text3);
+  margin-top: 5px;
+  text-transform: uppercase;
+}
+/* CTA */
+.cta-btn {
+  position: relative;
+  overflow: hidden;
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  font-weight: 700;
+  color: var(--space);
+  background: var(--cyan);
+  border: none;
+  padding: 14px 36px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: box-shadow 0.2s;
+  box-shadow: 0 0 20px rgba(0,245,255,0.35), 0 0 60px rgba(0,245,255,0.12);
+}
+.cta-btn:hover {
+  box-shadow: 0 0 30px rgba(0,245,255,0.65), 0 0 80px rgba(0,245,255,0.25);
+}
+.cta-scan {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 55%;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.35), transparent);
+  animation: scan-line 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes scan-line { 0%{top:-55%} 100%{top:155%} }
+/* Scroll hint */
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: var(--text3);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+}
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--cyan), transparent);
+  animation: scrollAnim 1.8s ease-in-out infinite;
+}
+@keyframes scrollAnim { 0%,100%{opacity:0.2} 50%{opacity:0.8} }
 
-/* ROUTE BAR */
-.route-section { padding: 2rem 1rem 1.5rem; max-width: 960px; margin: 0 auto; }
-.route-label { font-size: 10px; letter-spacing: 0.2em; color: var(--text3); text-transform: uppercase; text-align: center; margin-bottom: 1.5rem; }
-.route-scroll { overflow-x: auto; scrollbar-width: none; }
+/* ── ROUTE BAR ── */
+.route-section {
+  padding: 2.5rem 1rem 1.75rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.route-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 1.75rem;
+}
+.route-label-line {
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--border2);
+}
+.route-scroll { overflow-x: auto; scrollbar-width: none; padding-bottom: 6px; position: relative; }
 .route-scroll::-webkit-scrollbar { display: none; }
-.route-track { display: flex; align-items: center; min-width: max-content; padding: 0 1rem; margin: 0 auto; }
-.route-stop { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; padding: 8px 10px; border-radius: 10px; transition: background 0.15s; }
-.route-stop:hover { background: var(--surface2); }
-.stop-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--text3); transition: all 0.2s; }
-.route-stop.active .stop-dot { border-color: var(--accent); background: var(--accent); transform: scale(1.35); }
-.stop-name { font-size: 10px; color: var(--text3); white-space: nowrap; transition: color 0.2s; }
-.route-stop.active .stop-name { color: var(--accent); font-weight: 500; }
-.route-conn { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-bottom: 18px; padding: 0 2px; }
-.conn-icon { font-size: 10px; color: var(--text3); }
-.conn-dash { width: 22px; height: 1px; background: repeating-linear-gradient(to right, var(--text3) 0, var(--text3) 3px, transparent 3px, transparent 6px); }
+.route-section { position: relative; }
+.route-section::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 64px; height: 100%;
+  background: linear-gradient(to left, var(--space), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+@media (min-width: 900px) {
+  .route-section::after { display: none; }
+}
+.route-track {
+  display: flex;
+  align-items: center;
+  min-width: max-content;
+  padding: 0 1.5rem;
+  margin: 0 auto;
+}
+.route-stop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+.route-stop:hover {
+  background: var(--cyan-dim);
+  border-color: rgba(0,245,255,0.15);
+}
+.route-stop.active {
+  background: var(--cyan-dim);
+  border-color: var(--cyan);
+  box-shadow: 0 0 14px rgba(0,245,255,0.18);
+}
+.stop-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  border: 2px solid var(--text3);
+  transition: all 0.25s;
+}
+.route-stop.active .stop-dot {
+  border-color: var(--cyan);
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan), 0 0 20px rgba(0,245,255,0.35);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100%{box-shadow:0 0 6px var(--cyan),0 0 18px rgba(0,245,255,0.3)}
+  50%{box-shadow:0 0 12px var(--cyan),0 0 35px rgba(0,245,255,0.55)}
+}
+.stop-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  white-space: nowrap;
+  transition: color 0.2s;
+  text-transform: uppercase;
+}
+.route-stop.active .stop-name,
+.route-stop:hover .stop-name { color: var(--cyan); }
+.route-conn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 20px;
+  padding: 0 3px;
+}
+.conn-icon { font-size: 11px; color: var(--text3); }
+.conn-dash {
+  width: 24px; height: 1px;
+  background: repeating-linear-gradient(to right, var(--text3) 0, var(--text3) 3px, transparent 3px, transparent 7px);
+}
 
-/* DESTINATION CARD */
+/* ── DESTINATION CARD ── */
 .dest-section { max-width: 960px; margin: 0 auto; padding: 0 1rem 1rem; }
-.dest-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: none; }
+.dest-card {
+  background: var(--surface-glass);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: none;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 0 0 1px rgba(0,245,255,0.04),
+    0 24px 80px rgba(0,0,0,0.65),
+    inset 0 1px 0 rgba(0,245,255,0.08);
+  animation: card-appear 0.4s cubic-bezier(0.2,0.8,0.3,1);
+}
+@keyframes card-appear {
+  from { opacity:0; transform:translateY(18px) scale(0.98); }
+  to   { opacity:1; transform:none; }
+}
 .dest-card.active { display: block; }
-.dest-image-wrap { position: relative; height: 320px; overflow: hidden; }
-.dest-image-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 6s ease; }
+.dest-image-wrap {
+  position: relative;
+  height: 380px;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.4s ease;
+}
+.dest-image-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  z-index: 2;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0.7;
+}
+.dest-image-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 6s ease;
+  filter: brightness(0.80) saturate(0.95);
+}
 .dest-card:hover .dest-image-wrap img { transform: scale(1.04); }
-.dest-image-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 25%, rgba(10,10,10,0.95) 100%); }
-.dest-image-text { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.75rem 2rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; }
-.dest-country-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
-.dest-name { font-size: clamp(28px, 5vw, 44px); font-weight: 300; line-height: 1; letter-spacing: -0.02em; }
-.dest-dates { font-size: 13px; color: var(--text2); margin-top: 4px; }
-.dest-days-badge { background: rgba(232,213,163,0.15); border: 1px solid rgba(232,213,163,0.28); color: var(--accent); font-size: 11px; padding: 5px 13px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
-
-/* DAY TABS */
+.dest-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(3,7,18,0.88) 100%);
+}
+.dest-image-text {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 1.75rem 2rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 1;
+}
+.dest-country-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  background: rgba(0,245,255,0.08);
+  border: 1px solid rgba(0,245,255,0.22);
+  padding: 4px 10px;
+  border-radius: 3px;
+}
+.dest-name {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(22px, 4.5vw, 42px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.03em;
+  color: var(--text);
+  text-shadow: 0 0 40px rgba(0,245,255,0.5), 0 2px 10px rgba(0,0,0,0.9);
+}
+.dest-dates {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--text2);
+  margin-top: 4px;
+}
+.dest-days-badge {
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  background: var(--surface-glass2);
+  border: 1px solid var(--border2);
+  color: var(--cyan);
+  padding: 7px 14px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  text-transform: uppercase;
+}
+/* Day tabs */
 .dest-body { padding: 1.5rem 2rem 2rem; }
-.days-tabs { display: flex; gap: 6px; margin-bottom: 1.5rem; flex-wrap: wrap; }
-.day-tab { background: transparent; border: 1px solid var(--border2); color: var(--text2); font-size: 12px; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
-.day-tab:hover { background: var(--surface2); color: var(--text); }
-.day-tab.active { background: var(--accent2); border-color: rgba(232,213,163,0.4); color: var(--accent); }
-
-/* SCHEDULE */
+.days-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+.day-tab {
+  background: transparent;
+  border: 1px solid rgba(0,245,255,0.1);
+  color: var(--text3);
+  font-family: 'Orbitron', monospace;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  padding: 7px 13px;
+  border-radius: 3px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.day-tab:hover {
+  background: var(--cyan-dim);
+  border-color: rgba(0,245,255,0.2);
+  color: var(--text2);
+}
+.day-tab.active {
+  background: var(--cyan-dim);
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 10px rgba(0,245,255,0.18);
+}
+/* Schedule */
 .schedule { display: none; }
 .schedule.active { display: block; }
 .schedule-header { margin-bottom: 1.25rem; }
-.schedule-date { font-size: 18px; font-weight: 300; color: var(--text); margin-bottom: 2px; }
-.schedule-summary { font-size: 13px; color: var(--text2); }
-
-.timeline-item { display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); position: relative; cursor: pointer; }
+.schedule-date {
+  font-family: 'Orbitron', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+.schedule-summary { font-size:13px; color:var(--text2); }
+.timeline-item {
+  display: flex;
+  gap: 16px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  cursor: pointer;
+  transition: background 0.15s, padding 0.15s;
+}
 .timeline-item:last-child { border-bottom: none; }
-.timeline-item:hover { background: rgba(255,255,255,0.02); margin: 0 -8px; padding-left: 8px; padding-right: 8px; border-radius: 6px; }
-.tl-time { min-width: 88px; font-size: 12px; color: var(--accent); font-variant-numeric: tabular-nums; padding-top: 2px; flex-shrink: 0; }
-.tl-dot-col { display: flex; flex-direction: column; align-items: center; padding-top: 4px; flex-shrink: 0; }
-.tl-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text3); border: 1px solid var(--border2); flex-shrink: 0; }
-.tl-line { width: 1px; flex: 1; background: var(--border); margin-top: 4px; min-height: 20px; }
+.timeline-item:hover {
+  background: rgba(0,245,255,0.025);
+  margin: 0 -8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 8px;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: var(--cyan);
+  border-radius: 2px;
+  transform: scaleY(0);
+  transition: transform 0.2s;
+}
+.timeline-item:hover::before { transform: scaleY(1); }
+.tl-time {
+  min-width: 88px;
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  font-variant-numeric: tabular-nums;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+.tl-dot-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 4px;
+  flex-shrink: 0;
+}
+.tl-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid var(--text3);
+  flex-shrink: 0;
+}
+.tl-line {
+  width: 1px;
+  flex: 1;
+  background: linear-gradient(to bottom, var(--border2), transparent);
+  margin-top: 4px;
+  min-height: 20px;
+}
 .tl-content { flex: 1; }
 .tl-activity { font-size: 14px; color: var(--text); line-height: 1.45; margin-bottom: 3px; }
 .tl-detail { font-size: 12px; color: var(--text2); line-height: 1.5; }
-.tl-cost { display: inline-flex; align-items: center; gap: 4px; margin-top: 5px; font-size: 11px; color: var(--text3); background: var(--surface2); padding: 2px 8px; border-radius: 8px; }
-.tl-cost.free { color: #4a9; }
-.tl-duration { font-size: 11px; color: var(--text3); margin-top: 3px; }
-
-/* TRANSFER ROW */
-.transfer-row { display: flex; gap: 16px; padding: 8px 0; align-items: center; opacity: 0.55; }
-.transfer-row .tl-time { color: var(--text3); font-size: 11px; }
+.tl-cost {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+.tl-cost.free {
+  color: var(--cyan);
+  border-color: rgba(0,245,255,0.28);
+  background: var(--cyan-dim);
+}
+.tl-duration {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 5px;
+}
+/* Transfer rows */
+.transfer-row {
+  display: flex;
+  gap: 16px;
+  padding: 8px 0;
+  align-items: center;
+  opacity: 0.4;
+}
+.transfer-row .tl-time { color: var(--text3); font-size: 10px; }
 .transfer-row .tl-activity { font-size: 12px; color: var(--text3); font-style: italic; }
+/* Nav buttons */
+.dest-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 2rem 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  padding: 10px 18px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-transform: uppercase;
+}
+.nav-btn:hover:not(:disabled) {
+  background: var(--cyan-dim);
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 10px rgba(0,245,255,0.18);
+}
+.nav-btn:disabled { opacity: 0.2; cursor: default; }
+.nav-counter {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+}
+/* Share */
+.share-section {
+  max-width: 960px;
+  margin: 2rem auto 0;
+  padding: 2rem 1rem 4rem;
+  text-align: center;
+}
+.share-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+.share-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.share-btn {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  padding: 12px 24px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-transform: uppercase;
+}
+.share-btn:hover {
+  background: var(--cyan-dim);
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 10px rgba(0,245,255,0.18);
+}
+.share-btn.primary {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: var(--space);
+  font-weight: 700;
+  box-shadow: 0 0 18px rgba(0,245,255,0.28);
+}
+.share-btn.primary:hover { box-shadow: 0 0 28px rgba(0,245,255,0.5); }
+footer {
+  text-align: center;
+  padding: 2rem;
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  color: var(--text3);
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+  text-transform: uppercase;
+}
+/* ── TOP PROGRESS BAR ── */
+.top-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(to right, var(--blue), var(--cyan));
+  box-shadow: 0 0 10px var(--cyan);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 9998;
+  pointer-events: none;
+}
 
-/* NAV */
-.dest-nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem 1.5rem; border-top: 1px solid var(--border); }
-.nav-btn { display: flex; align-items: center; gap: 6px; background: transparent; border: 1px solid var(--border2); color: var(--text2); font-size: 13px; padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: all 0.15s; font-family: inherit; }
-.nav-btn:hover:not(:disabled) { background: var(--surface2); color: var(--text); }
-.nav-btn:disabled { opacity: 0.22; cursor: default; }
-.nav-counter { font-size: 12px; color: var(--text3); }
+/* Budget badge */
+.dest-meta-badges { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+.dest-budget-badge {
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  background: rgba(139,92,246,0.1);
+  border: 1px solid rgba(139,92,246,0.28);
+  color: var(--violet);
+  padding: 5px 14px;
+  border-radius: 3px;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
 
-/* SHARE */
-.share-section { max-width: 960px; margin: 2rem auto 0; padding: 1.5rem 1rem 3rem; text-align: center; }
-.share-title { font-size: 13px; color: var(--text3); margin-bottom: 1rem; }
-.share-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-.share-btn { background: transparent; border: 1px solid var(--border2); color: var(--text2); font-size: 13px; padding: 10px 22px; border-radius: 20px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
-.share-btn:hover { background: var(--surface2); color: var(--text); }
-.share-btn.primary { background: var(--accent); border-color: var(--accent); color: #1a1500; font-weight: 500; }
-.share-btn.primary:hover { opacity: 0.88; }
-
-footer { text-align: center; padding: 2rem; font-size: 11px; color: var(--text3); border-top: 1px solid var(--border); margin-top: 2rem; }
-
+/* Reveal animations */
+.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.in-view { opacity:1; transform:none; }
 @media (max-width: 640px) {
-  .dest-image-wrap { height: 240px; }
+  .dest-image-wrap { height: 230px; }
   .dest-body { padding: 1.25rem; }
   .dest-image-text { padding: 1.25rem; flex-direction: column; align-items: flex-start; }
   .dest-nav { padding: 1rem 1.25rem; }
-  .tl-time { min-width: 72px; }
+  .tl-time { min-width: 72px; font-size: 10px; }
+  .hero-title { font-size: 28px; }
+  .countdown { padding: 12px 14px; }
+  .cd-num { font-size: 20px; }
+  .cd-unit { min-width: 38px; }
+  .hero-stats { gap: 18px; }
+  .hstat-n { font-size: 20px; }
+  .day-tab { font-size: 8px; padding: 6px 10px; max-width: 130px; overflow: hidden; text-overflow: ellipsis; }
+  .dest-name { font-size: 18px; }
+  .dest-days-badge, .dest-budget-badge { font-size: 11px; padding: 5px 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+@media print {
+  body { background: white !important; color: black !important; }
+  .hero, #starCanvas, .hero-scanlines, .route-section, .share-section { display: none !important; }
+  .dest-card { background: white !important; border-color: #ccc !important; box-shadow: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+  .dest-name, .tl-activity { color: black !important; }
+  .dest-dates, .tl-detail, .tl-cost, .tl-duration { color: #444 !important; }
+  .dest-country-badge, .dest-days-badge, .day-tab, .nav-btn { display: none !important; }
+  .schedule { display: block !important; }
+  .tl-time { color: #555 !important; }
+  footer { color: #888 !important; border-top-color: #ccc !important; background: transparent !important; }
 }
 </style>
 </head>
 <body>
 
+<div class="top-progress" id="topProgress"></div>
+
 <!-- iOS/Android open-in-browser splash -->
-<div id="openBrowserOverlay" style="display:none;position:fixed;inset:0;z-index:9999;background:#0a0a0a;color:#f0ede8;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+<div id="openBrowserOverlay" style="display:none;position:fixed;inset:0;z-index:9999;background:#030712;color:#e2eaf8;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;overflow-y:auto;-webkit-overflow-scrolling:touch;">
   <div style="max-width:420px;margin:0 auto;padding:48px 28px 48px;">
     <!-- Logo / emoji -->
     <div style="font-size:48px;text-align:center;margin-bottom:20px;">✈️</div>
     <h1 style="font-size:26px;font-weight:300;text-align:center;letter-spacing:-0.02em;margin-bottom:8px;">Europa 2026</h1>
-    <p style="font-size:14px;color:#9e9b94;text-align:center;margin-bottom:36px;">Para ver el itinerario completo,<br>abrí este archivo en un navegador.</p>
+    <p style="font-size:14px;color:#7b90b8;text-align:center;margin-bottom:36px;">Para ver el itinerario completo,<br>abrí este archivo en un navegador.</p>
 
     <!-- iPhone instructions -->
     <div id="iosInstructions" style="display:none;">
-      <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;margin-bottom:16px;">
-        <p style="font-size:12px;color:#e8d5a3;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:14px;">iPhone / iPad</p>
+      <div style="background:rgba(6,18,42,0.8);border:1px solid rgba(0,245,255,0.15);border-radius:14px;padding:20px;margin-bottom:16px;">
+        <p style="font-size:12px;color:#00f5ff;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:14px;">iPhone / iPad</p>
         <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:#e8d5a3;color:#1a1500;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
-          <p style="font-size:14px;color:#f0ede8;line-height:1.5;">Tocá el ícono de compartir <span style="font-size:16px;">⬆</span> (abajo o arriba de la pantalla)</p>
+          <div style="width:26px;height:26px;border-radius:50%;background:#00f5ff;color:#030712;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+          <p style="font-size:14px;color:#e2eaf8;line-height:1.5;">Tocá el ícono de compartir <span style="font-size:16px;">⬆</span> (abajo o arriba de la pantalla)</p>
         </div>
         <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:#e8d5a3;color:#1a1500;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
-          <p style="font-size:14px;color:#f0ede8;line-height:1.5;">Elegí <strong style="color:#e8d5a3;">"Abrir con Safari"</strong> o <strong style="color:#e8d5a3;">"Abrir en Chrome"</strong></p>
+          <div style="width:26px;height:26px;border-radius:50%;background:#00f5ff;color:#030712;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+          <p style="font-size:14px;color:#e2eaf8;line-height:1.5;">Elegí <strong style="color:#00f5ff;">"Abrir con Safari"</strong> o <strong style="color:#00f5ff;">"Abrir en Chrome"</strong></p>
         </div>
         <div style="display:flex;align-items:flex-start;gap:12px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:#e8d5a3;color:#1a1500;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
-          <p style="font-size:14px;color:#f0ede8;line-height:1.5;">¡Listo! El itinerario se abre completo con imágenes y horarios.</p>
+          <div style="width:26px;height:26px;border-radius:50%;background:#00f5ff;color:#030712;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+          <p style="font-size:14px;color:#e2eaf8;line-height:1.5;">¡Listo! El itinerario se abre completo con imágenes y horarios.</p>
         </div>
       </div>
-      <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px;margin-bottom:16px;">
-        <p style="font-size:12px;color:#9e9b94;line-height:1.6;">💡 <strong style="color:#e8d5a3;">Tip:</strong> Si te llegó por WhatsApp, tocá los tres puntitos <strong style="color:#e8d5a3;">⋯</strong> y elegí <strong style="color:#e8d5a3;">"Abrir en navegador"</strong>.</p>
+      <div style="background:rgba(6,18,42,0.8);border:1px solid rgba(0,245,255,0.15);border-radius:14px;padding:16px;margin-bottom:16px;">
+        <p style="font-size:12px;color:#7b90b8;line-height:1.6;">💡 <strong style="color:#00f5ff;">Tip:</strong> Si te llegó por WhatsApp, tocá los tres puntitos <strong style="color:#00f5ff;">⋯</strong> y elegí <strong style="color:#00f5ff;">"Abrir en navegador"</strong>.</p>
       </div>
     </div>
 
     <!-- Android instructions -->
     <div id="androidInstructions" style="display:none;">
-      <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;margin-bottom:16px;">
-        <p style="font-size:12px;color:#e8d5a3;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:14px;">Android</p>
+      <div style="background:rgba(6,18,42,0.8);border:1px solid rgba(0,245,255,0.15);border-radius:14px;padding:20px;margin-bottom:16px;">
+        <p style="font-size:12px;color:#00f5ff;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:14px;">Android</p>
         <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:#e8d5a3;color:#1a1500;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
-          <p style="font-size:14px;color:#f0ede8;line-height:1.5;">Tocá el botón de compartir o los tres puntitos <strong style="color:#e8d5a3;">⋮</strong></p>
+          <div style="width:26px;height:26px;border-radius:50%;background:#00f5ff;color:#030712;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+          <p style="font-size:14px;color:#e2eaf8;line-height:1.5;">Tocá el botón de compartir o los tres puntitos <strong style="color:#00f5ff;">⋮</strong></p>
         </div>
         <div style="display:flex;align-items:flex-start;gap:12px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:#e8d5a3;color:#1a1500;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
-          <p style="font-size:14px;color:#f0ede8;line-height:1.5;">Elegí <strong style="color:#e8d5a3;">"Abrir con Chrome"</strong> o cualquier navegador</p>
+          <div style="width:26px;height:26px;border-radius:50%;background:#00f5ff;color:#030712;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+          <p style="font-size:14px;color:#e2eaf8;line-height:1.5;">Elegí <strong style="color:#00f5ff;">"Abrir con Chrome"</strong> o cualquier navegador</p>
         </div>
       </div>
     </div>
 
     <!-- Desktop instructions -->
     <div id="desktopInstructions" style="display:none;">
-      <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;margin-bottom:16px;">
-        <p style="font-size:14px;color:#f0ede8;line-height:1.6;">Hacé doble clic en el archivo <strong style="color:#e8d5a3;">europa2026.html</strong> para abrirlo en tu navegador, o arrastralo a la ventana del navegador.</p>
+      <div style="background:rgba(6,18,42,0.8);border:1px solid rgba(0,245,255,0.15);border-radius:14px;padding:20px;margin-bottom:16px;">
+        <p style="font-size:14px;color:#e2eaf8;line-height:1.6;">Hacé doble clic en el archivo <strong style="color:#00f5ff;">europa2026.html</strong> para abrirlo en tu navegador, o arrastralo a la ventana del navegador.</p>
       </div>
     </div>
 
-    <button onclick="closeOverlay()" style="-webkit-appearance:none;appearance:none;display:block;width:100%;margin-top:8px;padding:14px;background:#e8d5a3;border:none;border-radius:12px;font-size:15px;font-weight:600;color:#1a1500;cursor:pointer;font-family:inherit;">Ya lo abrí en el navegador →</button>
-    <p style="font-size:11px;color:#5e5c57;text-align:center;margin-top:12px;">También podés tocar el botón de arriba para ver el itinerario de todas formas.</p>
+    <button onclick="closeOverlay()" style="-webkit-appearance:none;appearance:none;display:block;width:100%;margin-top:8px;padding:14px;background:#00f5ff;border:none;border-radius:4px;font-size:15px;font-weight:700;color:#030712;cursor:pointer;font-family:inherit;letter-spacing:0.05em;">Ya lo abrí en el navegador →</button>
+    <p style="font-size:11px;color:#3d5070;text-align:center;margin-top:12px;">También podés tocar el botón de arriba para ver el itinerario de todas formas.</p>
   </div>
 </div>
 
@@ -222,29 +887,54 @@ footer { text-align: center; padding: 2rem; font-size: 11px; color: var(--text3)
 
 
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-overlay"></div>
+  <canvas id="starCanvas"></canvas>
+  <div class="hero-scanlines"></div>
   <div class="hero-content">
-    <div class="hero-eyebrow">Verano 2026</div>
-    <div class="hero-title">Europa <em>&</em><br>nosotras</div>
-    <div class="hero-sub">19 junio — 13 julio · Italia · Croacia · Grecia · España</div>
-    <div class="hero-stats">
-      <div class="hstat"><div class="hstat-n">25</div><div class="hstat-l">días</div></div>
-      <div class="hstat"><div class="hstat-n">9</div><div class="hstat-l">destinos</div></div>
-      <div class="hstat"><div class="hstat-n">4</div><div class="hstat-l">países</div></div>
+    <div class="hero-eyebrow">
+      <span class="eyebrow-dot"></span>
+      Misión Activa · Verano 2026
+      <span class="eyebrow-dot"></span>
     </div>
+    <h1 class="hero-title glitch" data-text="Europa &amp; nosotras">Europa &amp; nosotras</h1>
+    <div class="hero-sub">19 Jun — 13 Jul · Italia · Croacia · Grecia · España</div>
+    <div class="countdown-wrapper">
+      <div class="countdown-label">Despegue en</div>
+      <div class="countdown">
+        <div class="cd-unit"><span class="cd-num" id="cd-days">--</span><span class="cd-label">DÍAS</span></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-hours">--</span><span class="cd-label">HRS</span></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-mins">--</span><span class="cd-label">MIN</span></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-secs">--</span><span class="cd-label">SEG</span></div>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat" data-target="25"><span class="hstat-n">25</span><span class="hstat-l">días</span></div>
+      <div class="hstat" data-target="9"><span class="hstat-n">9</span><span class="hstat-l">destinos</span></div>
+      <div class="hstat" data-target="4"><span class="hstat-n">4</span><span class="hstat-l">países</span></div>
+      <div class="hstat" data-target="5000" data-suffix="+"><span class="hstat-n">5000+</span><span class="hstat-l">km</span></div>
+    </div>
+    <button class="cta-btn" onclick="document.getElementById('destSection').scrollIntoView({behavior:'smooth'})">
+      <span class="cta-scan"></span>
+      Ver itinerario
+    </button>
   </div>
-  <div class="scroll-hint"><span>Ver itinerario</span><div class="scroll-line"></div></div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
 </section>
 
-<section class="route-section">
-  <div class="route-label">Ruta del viaje</div>
+<section class="route-section reveal">
+  <div class="route-label">
+    <span class="route-label-line"></span>
+    Ruta del viaje
+    <span class="route-label-line"></span>
+  </div>
   <div class="route-scroll"><div class="route-track" id="routeTrack"></div></div>
 </section>
 
-<section class="dest-section" id="destSection"></section>
+<section class="dest-section reveal" id="destSection"></section>
 
-<section class="share-section">
+<section class="share-section reveal">
   <div class="share-title">Compartir este itinerario</div>
   <div class="share-actions">
     <button class="share-btn primary" onclick="copyText(this)">Copiar itinerario</button>
@@ -268,7 +958,7 @@ const stops = [
 },
 {
   name:"Roma", country:"Italia", flag:"🇮🇹", dates:"20 – 23 jun", daysLabel:"Días 1–4", transport:"✈",
-  image:"https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1200&q=80",
+  image:"https://images.unsplash.com/photo-1515542622106-078a2b4b9e7c?w=1200&q=80",
   days:[
     {
       date:"20 jun", label:"Llegada a Roma",
@@ -323,7 +1013,7 @@ const stops = [
 },
 {
   name:"Dubrovnik", country:"Croacia", flag:"🇭🇷", dates:"23 – 26 jun", daysLabel:"Días 4–7", transport:"⛴",
-  image:"https://images.unsplash.com/photo-1555990793-da11153b2473?w=1200&q=80",
+  image:"https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1200&q=80",
   days:[
     {
       date:"23 jun", label:"Llegada a Dubrovnik",
@@ -452,7 +1142,7 @@ const stops = [
 },
 {
   name:"Kefalonia", country:"Grecia", flag:"🇬🇷", dates:"1 – 4 jul", daysLabel:"Días 12–14", transport:"⛴",
-  image:"https://images.unsplash.com/photo-1601581975053-7655b4f61a2f?w=1200&q=80",
+  image:"https://images.unsplash.com/photo-1600493572705-8cf07bd5b3b5?w=1200&q=80",
   days:[
     {
       date:"1 jul", label:"Llegada — Petani Beach",
@@ -497,7 +1187,7 @@ const stops = [
 },
 {
   name:"Zakynthos", country:"Grecia", flag:"🇬🇷", dates:"4 – 6 jul", daysLabel:"Días 15–16", transport:"✈",
-  image:"https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=1200&q=80",
+  image:"https://images.unsplash.com/photo-1530841377377-3ff06c0ca713?w=1200&q=80",
   days:[
     {
       date:"4 jul", label:"Llegada a Zakynthos",
@@ -523,7 +1213,7 @@ const stops = [
 },
 {
   name:"Atenas", country:"Grecia", flag:"🇬🇷", dates:"6 – 8 jul", daysLabel:"Días 17–18", transport:"✈",
-  image:"https://images.unsplash.com/photo-1555993539-1732b0258235?w=1200&q=80",
+  image:"https://images.unsplash.com/photo-1606918801925-e2c914c01583?w=1200&q=80",
   days:[
     {
       date:"6 jul", label:"Llegada — Atenas clásica",
@@ -598,17 +1288,17 @@ const stops = [
   image:"https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=1200&q=80",
   days:[
     {
-      date:"12 jul", label:"Madrid — Vaticano + compras",
+      date:"12 jul", label:"Madrid — primer día",
       items:[
-        {type:"event", time:"07:30 – 08:00", activity:"Traslado al Vaticano (Roma)", detail:"Ir temprano para evitar colas. Reserva anticipada clave.", cost:"Metro / taxi", duration:"30 min"},
-        {type:"event", time:"08:00 – 10:30", activity:"Museos Vaticanos", detail:"Colección de arte más grande del mundo. Recorrer en 2–3 horas si tenés entrada reservada.", cost:"Entrada anticipada ~€€", duration:"2h30"},
-        {type:"event", time:"10:30 – 11:00", activity:"Capilla Sixtina", detail:"Parte final del recorrido de los museos. El fresco del Juicio Final de Miguel Ángel.", cost:"Incluido", duration:"30 min"},
-        {type:"event", time:"11:15 – 12:30", activity:"Basílica de San Pedro", detail:"Entrada gratuita. Puede haber cola variable. Subir a la cúpula para vista de Roma.", cost:"Gratis (cúpula ~€)", duration:"1h15"},
-        {type:"event", time:"13:00 – 14:00", activity:"Almuerzo cerca del Vaticano", detail:"Alejarse un poco de la zona turística para mejor relación precio/calidad.", cost:"~€€", duration:"1h"},
-        {type:"event", time:"14:30 – 16:30", activity:"Compras — Via Cola di Rienzo", detail:"Buen equilibrio precio/calidad. Zara, Mango y marcas europeas.", cost:"~€€", duration:"2h"},
-        {type:"event", time:"16:30 – 18:30", activity:"Compras — Via del Corso", detail:"Más variedad. La calle comercial más larga de Roma.", cost:"~€€", duration:"2h"},
-        {type:"event", time:"18:30 – 19:30", activity:"Via Condotti (opcional)", detail:"Zona de lujo. Gucci, Prada, Louis Vuitton. Solo para mirar (o no).", cost:"~€€€", duration:"1h"},
-        {type:"event", time:"Noche", activity:"Cena de cierre del viaje", detail:"Último gran asado italiano o español. Centro o Trastevere.", cost:"~€€", duration:""},
+        {type:"event", time:"07:00 – 08:30", activity:"Llegada al aeropuerto de Madrid", detail:"Vuelo nocturno desde Mykonos. Aterrizaje en Barajas T4.", cost:"", duration:""},
+        {type:"transfer", time:"08:30 – 09:30", activity:"Traslado y check-in", detail:"Metro línea 8 directo al centro (~5€) o taxi (~35€). Dejar valijas.", cost:"Metro ~5€ / Taxi ~35€", duration:"1h"},
+        {type:"event", time:"10:00 – 11:30", activity:"Gran Vía", detail:"El boulevard más famoso de Madrid. Arquitectura art déco, tiendas, ambiente de ciudad.", cost:"Gratis", duration:"1h30"},
+        {type:"event", time:"11:30 – 13:00", activity:"Puerta del Sol + Plaza Mayor", detail:"El corazón histórico de Madrid. La Puerta del Sol con el Kilómetro Cero y la icónica Plaza Mayor con sus bares de soportales.", cost:"Gratis", duration:"1h30"},
+        {type:"event", time:"13:00 – 14:30", activity:"Almuerzo en Mercado de San Miguel", detail:"Mercado gastronómico de hierro del s.XIX. Tapas, jamón ibérico, croquetas y vino. Experiencia madrileña clásica.", cost:"~€20–30", duration:"1h30"},
+        {type:"transfer", time:"14:30 – 15:00", activity:"Caminata al Retiro", detail:"A pie por el Paseo del Prado.", cost:"", duration:"30 min"},
+        {type:"event", time:"15:00 – 17:00", activity:"Parque del Retiro", detail:"El pulmón verde de Madrid. Lago con barcas de remo, jardines, palacios de cristal y hierro. Perfecto para descansar después del viaje.", cost:"Gratis (barcas ~€6)", duration:"2h"},
+        {type:"event", time:"17:30 – 19:30", activity:"Barrio de las Letras", detail:"El barrio literario más bonito de Madrid. Calles empedradas con versos en el suelo, librerías y bares de vinos.", cost:"Gratis", duration:"2h"},
+        {type:"event", time:"21:00 – 23:00", activity:"Cena de despedida + flamenco", detail:"Taberna El Corral de la Morería o similar. Cena española con espectáculo flamenco. El cierre perfecto del viaje.", cost:"~€40–60", duration:"2h"},
       ]
     },
     {
@@ -698,7 +1388,10 @@ function buildCard() {
           <div class="dest-name">${s.name}</div>
           <div class="dest-dates">${s.dates}</div>
         </div>
-        <div class="dest-days-badge">${s.daysLabel}</div>
+        <div class="dest-meta-badges">
+          <div class="dest-days-badge">${s.daysLabel}</div>
+          ${calcBudget(s) > 0 ? `<div class="dest-budget-badge">~€${calcBudget(s)} activ.</div>` : ''}
+        </div>
       </div>
     </div>
     <div class="dest-body">
@@ -723,7 +1416,7 @@ function switchDay(idx) {
 function navigate(dir) {
   currentStop = Math.max(0, Math.min(stops.length - 1, currentStop + dir));
   currentDay = 0;
-  buildRoute(); buildCard(); scrollToCard();
+  buildRoute(); buildCard(); scrollToCard(); updateTopProgress();
 }
 
 function scrollToCard() {
@@ -733,7 +1426,23 @@ function scrollToCard() {
   }, 50);
 }
 
-const colors = { Italia:'#D85A30', Croacia:'#185FA5', Grecia:'#1D9E75', España:'#BA7517', Argentina:'#888' };
+const colors = { Italia:'#f43f5e', Croacia:'#4169e1', Grecia:'#00f5ff', España:'#8b5cf6', Argentina:'#7b90b8' };
+
+function calcBudget(s) {
+  const skip = /gratis|incluido|vuelo|ferry|auto/i;
+  let total = 0;
+  s.days.forEach(d => d.items.forEach(item => {
+    if (!item.cost || skip.test(item.cost)) return;
+    const nums = item.cost.match(/\d+/g);
+    if (nums) total += parseInt(nums[0]);
+  }));
+  return Math.round(total);
+}
+
+function updateTopProgress() {
+  const bar = document.getElementById('topProgress');
+  if (bar) bar.style.width = (currentStop / (stops.length - 1) * 100) + '%';
+}
 stops.forEach(s => { s.color = colors[s.country] || '#888'; });
 
 function copyText(btn) {
@@ -749,7 +1458,170 @@ function copyText(btn) {
   });
 }
 
-buildRoute(); buildCard();
+buildRoute(); buildCard(); updateTopProgress();
+</script>
+
+<script>
+/* ── PARTICLE / STAR FIELD ── */
+(function initParticles() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const canvas = document.getElementById('starCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [], animId;
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function mkStar() {
+    return {
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 1.3 + 0.2,
+      vx: (Math.random() - 0.5) * 0.07,
+      vy: (Math.random() - 0.5) * 0.07,
+      opacity: Math.random() * 0.65 + 0.1,
+      twinkle: Math.random() * Math.PI * 2
+    };
+  }
+
+  function init() {
+    resize();
+    const count = Math.min(Math.floor((W * H) / 5000), 220);
+    stars = Array.from({ length: count }, mkStar);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    if (Math.random() < 0.003) {
+      const sx = Math.random() * W, sy = Math.random() * H * 0.5;
+      const len = 80 + Math.random() * 110;
+      const grad = ctx.createLinearGradient(sx, sy, sx + len, sy + len * 0.35);
+      grad.addColorStop(0, 'rgba(0,245,255,0)');
+      grad.addColorStop(0.5, 'rgba(0,245,255,0.55)');
+      grad.addColorStop(1, 'rgba(0,245,255,0)');
+      ctx.strokeStyle = grad; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx + len, sy + len * 0.35); ctx.stroke();
+    }
+    stars.forEach(s => {
+      s.twinkle += 0.022;
+      const op = s.opacity * (0.55 + 0.45 * Math.sin(s.twinkle));
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(190,220,255,${op})`; ctx.fill();
+      s.x += s.vx; s.y += s.vy;
+      if (s.x < 0) s.x = W; if (s.x > W) s.x = 0;
+      if (s.y < 0) s.y = H; if (s.y > H) s.y = 0;
+    });
+    animId = requestAnimationFrame(draw);
+  }
+
+  const hero = canvas.closest('.hero');
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { init(); draw(); }
+    else cancelAnimationFrame(animId);
+  }, { threshold: 0.01 });
+  obs.observe(hero);
+
+  window.addEventListener('resize', () => { cancelAnimationFrame(animId); init(); draw(); });
+})();
+
+/* ── COUNTDOWN ── */
+(function initCountdown() {
+  const launch = new Date('2026-06-19T22:00:00-03:00');
+  const dEl = document.getElementById('cd-days');
+  const hEl = document.getElementById('cd-hours');
+  const mEl = document.getElementById('cd-mins');
+  const sEl = document.getElementById('cd-secs');
+  const labelEl = document.querySelector('.countdown-label');
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function tick() {
+    const diff = launch - Date.now();
+    if (diff <= 0) {
+      if (dEl) dEl.textContent = '00';
+      if (hEl) hEl.textContent = '00';
+      if (mEl) mEl.textContent = '00';
+      if (sEl) sEl.textContent = '00';
+      if (labelEl) labelEl.textContent = '¡Viajando!';
+      return;
+    }
+    const days  = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const mins  = Math.floor((diff % 3600000)  / 60000);
+    const secs  = Math.floor((diff % 60000)    / 1000);
+    if (dEl) dEl.textContent = String(days);
+    if (hEl) hEl.textContent = pad(hours);
+    if (mEl) mEl.textContent = pad(mins);
+    if (sEl) sEl.textContent = pad(secs);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
+/* ── COUNT-UP STATS ── */
+(function initCountUp() {
+  const stats = document.querySelectorAll('.hstat[data-target]');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      if (el.dataset.counted) return;
+      el.dataset.counted = '1';
+      obs.unobserve(el);
+      const target = parseInt(el.dataset.target);
+      const suffix = el.dataset.suffix || '';
+      const numEl = el.querySelector('.hstat-n');
+      if (!numEl) return;
+      const duration = 1400, start = performance.now();
+      function update(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        numEl.textContent = Math.round(eased * target) + suffix;
+        if (p < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    });
+  }, { threshold: 0.6 });
+  stats.forEach(s => obs.observe(s));
+})();
+
+/* ── SCROLL REVEAL ── */
+(function initReveal() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
+
+/* ── TILT PARALLAX ON CARD IMAGE ── */
+function attachTilt() {
+  const wrap = document.querySelector('.dest-image-wrap');
+  if (!wrap || !window.matchMedia('(pointer: fine)').matches) return;
+  wrap.addEventListener('mousemove', e => {
+    const { left, top, width, height } = wrap.getBoundingClientRect();
+    const x = (e.clientX - left) / width  - 0.5;
+    const y = (e.clientY - top)  / height - 0.5;
+    wrap.style.transform = `perspective(700px) rotateX(${y * 5}deg) rotateY(${-x * 5}deg)`;
+    wrap.style.transition = 'transform 0.05s linear';
+  });
+  wrap.addEventListener('mouseleave', () => {
+    wrap.style.transform = '';
+    wrap.style.transition = 'transform 0.45s ease';
+  });
+}
+
+/* Patch buildCard to re-attach tilt after each rebuild */
+const _origBuildCard = buildCard;
+buildCard = function() { _origBuildCard(); attachTilt(); };
+attachTilt();
+
+/* ── KEYBOARD NAVIGATION ── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') navigate(1);
+  if (e.key === 'ArrowLeft')  navigate(-1);
+});
 </script>
 </body>
 </html>
