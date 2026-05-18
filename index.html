@@ -722,6 +722,43 @@ body {
   box-shadow: 0 0 18px rgba(0,245,255,0.28);
 }
 .share-btn.primary:hover { box-shadow: 0 0 28px rgba(0,245,255,0.5); }
+.sync-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.sync-fab:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 14px rgba(0,245,255,0.22);
+}
+.sync-fab.syncing {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  animation: syncPulse 0.8s ease-in-out infinite alternate;
+}
+.sync-fab .sync-icon { font-size: 12px; line-height: 1; }
+@keyframes syncPulse {
+  from { box-shadow: 0 0 6px rgba(0,245,255,0.2); }
+  to   { box-shadow: 0 0 20px rgba(0,245,255,0.5); }
+}
 footer {
   text-align: center;
   padding: 2rem;
@@ -944,8 +981,13 @@ footer {
 
 <footer>Europa 2026 · Hecho con amor ✈</footer>
 
+<button class="sync-fab" id="syncBtn" onclick="syncSheet(this)" title="Sincronizar con Google Sheet">
+  <span class="sync-icon">⟳</span>
+  <span class="sync-label">Sync sheet</span>
+</button>
+
 <script>
-const stops = [
+let stops = [
 {
   name:"Buenos Aires", country:"Argentina", flag:"🇦🇷", dates:"19 jun", daysLabel:"Día 0", transport:"✈",
   image:"https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=1200&q=80",
@@ -1464,7 +1506,47 @@ function copyText(btn) {
   });
 }
 
-buildRoute(); buildCard(); updateTopProgress();
+/* ── GOOGLE SHEET SYNC ── */
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyzPRwdAdLKqN2TZAqnyTP1En1pjIOV7wWi8Dzxx6rqWsQ_Im5LeRkuDE2DWX6ccBmAHA/exec';
+
+async function loadFromSheet() {
+  if (!SHEET_URL || SHEET_URL.startsWith('TU_')) return;
+  try {
+    const res = await fetch(SHEET_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    mergeSheetData(data);
+  } catch(e) {
+    console.warn('Sheet sync fallida, usando datos locales:', e.message);
+  }
+}
+
+function mergeSheetData(sheetData) {
+  stops.forEach(stop => {
+    const tabData = sheetData[stop.name];
+    if (tabData && tabData.length > 0) stop.days = tabData;
+  });
+  stops.forEach(s => { s.color = colors[s.country] || '#888'; });
+}
+
+async function syncSheet(btn) {
+  btn.classList.add('syncing');
+  const label = btn.querySelector('.sync-label');
+  const orig = label.textContent;
+  label.textContent = 'Actualizando…';
+  await loadFromSheet();
+  buildCard();
+  updateTopProgress();
+  label.textContent = orig;
+  btn.classList.remove('syncing');
+}
+
+(async () => {
+  await loadFromSheet();
+  buildRoute();
+  buildCard();
+  updateTopProgress();
+})();
 </script>
 
 <script>
