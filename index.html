@@ -1186,20 +1186,26 @@ const stops = [
   ]
 },
 {
-  name:"Zakynthos", country:"Grecia", flag:"🇬🇷", dates:"4 – 6 jul", daysLabel:"Días 15–16", transport:"✈",
+  name:"Zakynthos", country:"Grecia", flag:"🇬🇷", dates:"4 – 6 jul", daysLabel:"Días 15–17", transport:"⛴",
   image:"https://images.unsplash.com/photo-1530841377377-3ff06c0ca713?w=1200&q=80",
   days:[
     {
-      date:"4 jul", label:"Llegada a Zakynthos",
+      date:"4 jul", label:"Llegada + Ruta Sur en barco",
       items:[
-        {type:"event", time:"Tarde", activity:"Llegada — instalarse", detail:"Check-in en el alojamiento. Descansar del trayecto.", cost:"", duration:""},
-        {type:"event", time:"Tarde/Noche", activity:"Primer paseo por la ciudad", detail:"Zakynthos Town tiene un paseo marítimo muy lindo.", cost:"Gratis", duration:""},
+        {type:"transfer", time:"9:15", activity:"Llegada — Puerto Agios Nikolaos", detail:"Ferry desde Kefalonia. Terminal norte de la isla.", cost:"", duration:""},
+        {type:"event", time:"~10:00", activity:"Barco — Ruta Sur (día completo)", detail:"Cuevas de Keri · Isla de las Tortugas Marathonisi · Cameo Island · Bahía de Laganas (tortugas Caretta caretta) · Limni Keriou.", cost:"", duration:"~7h"},
+        {type:"event", time:"~18:00", activity:"Check-in Airbnb", detail:"Zante Town.", cost:"", duration:""},
+        {type:"event", time:"Noche", activity:"Cena en Zante Town", detail:"Paseo marítimo de Zakynthos. Gran ambiente nocturno.", cost:"", duration:""},
       ]
     },
     {
-      date:"5 jul", label:"Playas de Zakynthos",
+      date:"5 jul", label:"Ruta Norte + Costa Oeste",
       items:[
-        {type:"event", time:"Todo el día", activity:"Exploración en auto por la isla", detail:"Principales paradas: Navagio Beach (Shipwreck Beach, acceso en barco), Blue Caves, Porto Limnionas, Laganas Beach.", cost:"Auto + barco ~15€", duration:""},
+        {type:"event", time:"9:00", activity:"Barco — Ruta Norte", detail:"Cabo Skinari · Cuevas Azules (Blue Caves) · Cuevas Blancas · Navagio / Shipwreck Beach desde el mar · Porto Vromi.", cost:"", duration:"4h"},
+        {type:"event", time:"~13:00", activity:"Almuerzo + retirar auto", detail:"Parada para comer antes del road trip por la costa oeste.", cost:"", duration:""},
+        {type:"event", time:"~15:30", activity:"Mirador Navagio", detail:"Vista desde el acantilado sobre Shipwreck Beach. Una de las fotos más icónicas de Grecia.", cost:"Gratis", duration:""},
+        {type:"event", time:"~16:30", activity:"Porto Limnionas", detail:"Piscina natural entre rocas volcánicas. Agua cristalina, ideal para nadar y snorkelear.", cost:"Gratis", duration:""},
+        {type:"event", time:"~19:00", activity:"Atardecer — Restaurante Sofi's", detail:"Punto final del road trip. Atardecer en la costa oeste con vistas al mar Jónico.", cost:"", duration:""},
       ]
     },
     {
