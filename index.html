@@ -1507,7 +1507,7 @@ function copyText(btn) {
 }
 
 /* ── GOOGLE SHEET SYNC ── */
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyzPRwdAdLKqN2TZAqnyTP1En1pjIOV7wWi8Dzxx6rqWsQ_Im5LeRkuDE2DWX6ccBmAHA/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbziUS9HJjRDhKAbcIzFRVc4rD4CQIba9oGJt3YFGTTeLlWF2mRzrcXPlmM6zlnqws696w/exec';
 
 async function loadFromSheet() {
   if (!SHEET_URL || SHEET_URL.startsWith('TU_')) return;
@@ -1522,8 +1522,10 @@ async function loadFromSheet() {
 }
 
 function mergeSheetData(sheetData) {
+  const normalized = {};
+  Object.keys(sheetData).forEach(k => { normalized[k.trim().toLowerCase()] = sheetData[k]; });
   stops.forEach(stop => {
-    const tabData = sheetData[stop.name];
+    const tabData = normalized[stop.name.trim().toLowerCase()];
     if (tabData && tabData.length > 0) stop.days = tabData;
   });
   stops.forEach(s => { s.color = colors[s.country] || '#888'; });

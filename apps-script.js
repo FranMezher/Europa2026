@@ -19,7 +19,7 @@ function doGet() {
 
   ss.getSheets().forEach(function(sheet) {
     const name = sheet.getName();
-    const rows = sheet.getDataRange().getValues();
+    const rows = sheet.getDataRange().getDisplayValues();
     result[name] = parseTab(rows);
   });
 
