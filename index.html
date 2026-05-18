@@ -1385,9 +1385,10 @@ function buildCard() {
   section.innerHTML = '';
   const s = stops[currentStop];
 
-  const tabsHtml = s.days.map((d, i) =>
-    `<button class="day-tab${i === currentDay ? ' active' : ''}" onclick="switchDay(${i})">${d.date} — ${d.label}</button>`
-  ).join('');
+  const tabsHtml = s.days.map((d, i) => {
+    const tabLabel = d.label && d.label !== d.date ? `${d.date} — ${d.label}` : d.date;
+    return `<button class="day-tab${i === currentDay ? ' active' : ''}" onclick="switchDay(${i})">${tabLabel}</button>`;
+  }).join('');
 
   const schedulesHtml = s.days.map((d, i) => {
     const itemsHtml = d.items.map((item, idx) => {
@@ -1507,7 +1508,7 @@ function copyText(btn) {
 }
 
 /* ── GOOGLE SHEET SYNC ── */
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbziUS9HJjRDhKAbcIzFRVc4rD4CQIba9oGJt3YFGTTeLlWF2mRzrcXPlmM6zlnqws696w/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbz-RS29WoE6M-8zdWbnHcwan2BKK33gvhGLOcKI94LFAFDg08o_4sIVha5NBTQLq_M7VQ/exec';
 
 async function loadFromSheet() {
   if (!SHEET_URL || SHEET_URL.startsWith('TU_')) return;
